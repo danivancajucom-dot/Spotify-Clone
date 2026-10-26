@@ -1,0 +1,237 @@
+:root,
+html[data-theme="light"],
+html[data-theme="dark"],
+html[data-theme="auto"] {
+  --primary: #171717;
+  --primary-fg: #ffffff;
+  --secondary: #242424;
+  --accent: #1ed760;
+
+  --header-bg: #101010;
+  --header-color: #eeeeee;
+  --header-branding-color: #1ed760;
+  --header-link-color: #ffffff;
+
+  --breadcrumbs-bg: #1c1c1c;
+  --breadcrumbs-fg: #c7c7c7;
+  --breadcrumbs-link-fg: #ffffff;
+
+  --link-fg: #12883b;
+  --link-hover-color: #0b6b2d;
+  --link-selected-fg: #0b6b2d;
+
+  --button-bg: #242424;
+  --button-hover-bg: #383838;
+  --default-button-bg: #1ed760;
+  --default-button-hover-bg: #19bd52;
+
+  --object-tools-bg: #292929;
+  --object-tools-hover-bg: #3a3a3a;
+
+  --selected-row: #e8faee;
+}
+
+html[data-theme="dark"] {
+  --link-fg: #1ed760;
+  --link-hover-color: #80f5a8;
+  --link-selected-fg: #80f5a8;
+  --selected-row: #183321;
+
+  --body-bg: #111111;
+  --darkened-bg: #1b1b1b;
+  --body-quiet-color: #aaaaaa;
+  --body-loud-color: #f5f5f5;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+/* Header */
+#header {
+  min-height: 58px;
+  padding: 12px 24px;
+  border-bottom: 1px solid #303030;
+  box-shadow: 0 3px 16px #00000010;
+}
+
+#site-name a {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+#user-tools {
+  font-size: 12px;
+}
+
+/* Breadcrumbs */
+div.breadcrumbs {
+  padding: 13px 24px;
+}
+
+/* Main content */
+#content {
+  padding: 26px;
+}
+
+#content h1 {
+  margin: 0 0 22px;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+/* Modules and tables */
+.module,
+.inline-group,
+#changelist,
+.submit-row {
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.module {
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color, #dddddd);
+  box-shadow: 0 4px 18px #00000008;
+}
+
+.module h2,
+.module caption,
+.inline-group h2 {
+  padding: 13px 16px;
+  background: var(--secondary);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.dashboard .module table th,
+.dashboard .module table td {
+  padding: 12px 14px;
+}
+
+#content-main .module table tr:hover,
+#changelist table tbody tr:hover {
+  background: var(--selected-row);
+}
+
+/* Links */
+a:link,
+a:visited {
+  transition: color 0.15s ease;
+}
+
+/* Buttons */
+.button,
+input[type="submit"],
+input[type="button"],
+.submit-row input,
+a.button {
+  padding: 9px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+
+.button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+a.button:hover {
+  transform: translateY(-1px);
+}
+
+.button.default,
+input[type="submit"].default,
+.submit-row input.default {
+  color: #06210f;
+  font-weight: 800;
+}
+
+/* Form fields */
+input,
+textarea,
+select,
+.vTextField,
+.vLargeTextField {
+  box-sizing: border-box;
+  max-width: 100%;
+  border-radius: 7px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid #1ed76066;
+  border-color: #1ed760 !important;
+}
+
+/* Filters and search */
+#changelist-filter {
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+#changelist-filter h2 {
+  padding: 13px;
+}
+
+#changelist-search input[type="text"] {
+  min-height: 36px;
+}
+
+/* Pagination */
+.paginator {
+  padding: 14px;
+}
+
+/* Notifications */
+.messagelist li {
+  margin: 0 0 8px;
+  padding: 12px 14px 12px 42px;
+  border-radius: 9px;
+}
+
+/* Object tools */
+.object-tools {
+  margin-top: -3px;
+}
+
+/* Responsive layout */
+@media (max-width: 767px) {
+  #content {
+    padding: 14px;
+  }
+
+  #header {
+    padding: 12px 15px;
+  }
+
+  div.breadcrumbs {
+    padding: 12px 15px;
+  }
+
+  #content h1 {
+    font-size: 22px;
+  }
+
+  #changelist #changelist-filter {
+    float: none;
+    width: auto;
+    margin: 12px 0;
+  }
+
+  #changelist .results {
+    overflow-x: auto;
+  }
+
+  .aligned .form-row {
+    padding: 12px;
+  }
+}

@@ -1,0 +1,41 @@
+{% extends "layouts/app.html" %}
+{% load static %}
+{% block title %}Add to playlist{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="{% static 'music/css/pages/add-track.css' %}">{% endblock %}
+{% block content %}
+<a class="back" href="{{ next|default:track.album.get_absolute_url }}"><svg class="ic"><use href="#i-back"/></svg>Back</a>
+<div class="page-head"><div><h1>Add to playlist</h1><p class="muted">Pick where this track should go.</p></div></div>
+
+{% if playlists %}
+<form method="post" class="form-card reveal" data-confirm="Add this track?" data-confirm-text="“{{ track.title }}” will be added to the playlist you picked." data-confirm-ok="Add track" data-icon="plus" data-toast="Track added to playlist">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ next }}">
+
+  <div class="mini">
+    <div class="mini-art ph" data-seed="{{ track.album.title }}">{% if track.album.cover %}<img src="{{ track.album.cover.url }}" alt="">{% else %}<svg class="ic"><use href="#i-note"/></svg>{% endif %}</div>
+    <div class="mini-meta"><strong>{{ track.title }}</strong><span class="muted">{{ track.album.artist.name }} · {{ track.album.title }}</span></div>
+  </div>
+
+  <fieldset class="field">
+    <legend>Choose a playlist</legend>
+    <div class="picks">
+      {% for p in playlists %}
+      <label class="pick">
+        <input type="radio" name="playlist" value="{{ p.pk }}" {% if forloop.first %}checked{% endif %}>
+        <span class="pick-art ph" data-seed="{{ p.name }}"><svg class="ic"><use href="#i-list"/></svg></span>
+        <span class="pick-meta"><strong>{{ p.name }}</strong><small class="muted">{{ p.track_total }} track{{ p.track_total|pluralize }}</small></span>
+        <span class="pick-check"><svg class="ic"><use href="#i-check"/></svg></span>
+      </label>
+      {% endfor %}
+    </div>
+  </fieldset>
+
+  <div class="form-actions">
+    <button class="btn"><svg class="ic"><use href="#i-plus"/></svg>Add track</button>
+    <a class="btn ghost" href="{{ next|default:track.album.get_absolute_url }}">Cancel</a>
+  </div>
+</form>
+{% else %}
+<div class="empty"><svg class="ic"><use href="#i-list"/></svg><p>You need a playlist before you can add tracks.</p><a class="btn" href="{% url 'playlist_create' %}"><svg class="ic"><use href="#i-plus"/></svg>Create a playlist</a></div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "layouts/auth.html" %}
+{% block title %}Sign up{% endblock %}
+{% block auth %}
+<h1 class="auth-title">Create your account</h1>
+<form method="post" novalidate>{% csrf_token %}
+  {% include "components/auth_fields.html" %}
+  {% if form.password1.errors or form.password2.errors %}
+  <div class="pw-rules" id="pw-rules">
+    <b>Your password needs to:</b>
+    <ul>
+      <li data-rule="len">Be at least 8 characters long</li>
+      <li data-rule="num">Not be only numbers</li>
+      <li data-rule="common">Not be a commonly used password</li>
+      <li data-rule="similar">Not be too similar to your username or email</li>
+      <li data-rule="match">Match in both password fields</li>
+    </ul>
+  </div>
+  {% endif %}
+  <button class="btn block">Sign up</button>
+</form>
+<p class="alt">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+{% endblock %}

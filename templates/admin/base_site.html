@@ -1,0 +1,8 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{# Re-themes the Django admin so it matches the app (dark + green). #}
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'music/css/admin.css' %}">
+{% endblock %}

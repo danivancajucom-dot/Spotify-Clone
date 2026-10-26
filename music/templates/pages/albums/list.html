@@ -1,0 +1,10 @@
+{% extends "layouts/app.html" %}
+{% block title %}Albums{% endblock %}
+{% block content %}
+{% url 'album_create' as create_url %}
+{% include "components/page_head.html" with title="Albums" subtitle="Browse every release." action_url=create_url action_label="Add album" %}
+<div class="grid stagger">
+  {% for album in albums %}{% include "components/album_card.html" %}
+  {% empty %}{% include "components/empty_state.html" with icon="disc" message="No albums yet. Add an artist first, then an album." %}{% endfor %}
+</div>
+{% endblock %}

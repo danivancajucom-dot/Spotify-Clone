@@ -1,0 +1,20 @@
+{% extends "layouts/app.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<a class="back" href="{{ cancel_url }}"><svg class="ic"><use href="#i-back"/></svg>Back</a>
+<div class="page-head"><div><h1>{{ title }}</h1><p class="muted">Fields marked <span class="req">*</span> are required.</p></div></div>
+
+<form method="post" enctype="multipart/form-data" class="form-card reveal" novalidate
+      {% if title|slice:":4" == "Edit" %}data-confirm="Save changes?" data-confirm-text="This will update the saved details." data-confirm-ok="Save changes" data-icon="check"{% endif %}>
+  {% csrf_token %}
+
+  {% include "components/form_alert.html" %}
+
+  {% for field in form %}{% include "components/form_field.html" %}{% endfor %}
+
+  <div class="form-actions">
+    <button class="btn">Save</button>
+    <a class="btn ghost" href="{{ cancel_url }}">Cancel</a>
+  </div>
+</form>
+{% endblock %}

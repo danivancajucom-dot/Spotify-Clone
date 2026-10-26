@@ -1,0 +1,10 @@
+{% extends "layouts/app.html" %}
+{% block title %}Artists{% endblock %}
+{% block content %}
+{% url 'artist_create' as create_url %}
+{% include "components/page_head.html" with title="Artists" subtitle="Everyone in your library." action_url=create_url action_label="Add artist" %}
+<div class="grid stagger">
+  {% for artist in artists %}{% include "components/artist_card.html" %}
+  {% empty %}{% include "components/empty_state.html" with icon="mic" message="No artists yet." cta_url=create_url cta_label="Add the first artist" %}{% endfor %}
+</div>
+{% endblock %}

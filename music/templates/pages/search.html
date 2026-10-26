@@ -1,0 +1,15 @@
+{% extends "layouts/app.html" %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Search</h1>{% if q %}<p class="muted">Results for “{{ q }}”</p>{% endif %}</div></div>
+{% if not q %}
+  {% include "components/empty_state.html" with icon="search" message="Type a track, artist, or album name in the search bar." %}
+{% else %}
+  <h2 class="first">Tracks</h2>
+  {% if tracks %}{% include "components/track_table.html" with show_album=True %}{% else %}<p class="muted">No tracks found.</p>{% endif %}
+  <h2>Artists</h2>
+  <div class="grid stagger">{% for artist in artists %}{% include "components/artist_card.html" %}{% empty %}<p class="muted">No artists found.</p>{% endfor %}</div>
+  <h2>Albums</h2>
+  <div class="grid stagger">{% for album in albums %}{% include "components/album_card.html" %}{% empty %}<p class="muted">No albums found.</p>{% endfor %}</div>
+{% endif %}
+{% endblock %}

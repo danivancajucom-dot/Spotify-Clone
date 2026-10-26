@@ -1,0 +1,21 @@
+/* =========== COMPONENT: covers, cards, empty state =========== */
+/* ---------- covers / cards ---------- */
+.ph{background:linear-gradient(135deg,hsl(var(--h,150) 55% 40%),hsl(calc(var(--h,150) + 45) 60% 22%));display:grid;place-items:center;color:rgba(255,255,255,.55);overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph .ic{width:34%;height:34%}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:20px}
+.card{position:relative;display:block;background:var(--panel);border:1px solid transparent;border-radius:var(--radius);padding:14px;min-width:0;
+  transition:transform .35s var(--ease),background .25s,border-color .25s,box-shadow .35s}
+.card:hover{transform:translateY(-6px);background:var(--panel2);border-color:var(--line);box-shadow:0 22px 40px rgba(0,0,0,.45)}
+.card .art{aspect-ratio:1;border-radius:10px;margin-bottom:12px;box-shadow:0 10px 24px rgba(0,0,0,.4);transition:transform .45s var(--ease)}
+.card:hover .art{transform:scale(1.03)}
+.card.round .art{border-radius:50%}
+.card.round{text-align:center}
+.card strong,.card .muted{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .muted{font-size:.88rem}
+.card.playlist .art{display:grid}
+.empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding:48px 20px;border:1.5px dashed #453d5e;border-radius:var(--radius);text-align:center;color:var(--muted);grid-column:1/-1}
+.empty .ic{width:38px;height:38px;color:#6d6488}
+.empty p{margin:0;max-width:44ch}
+.empty p a,.empty>a:not(.btn){color:var(--green);font-weight:700}
+.empty .btn{margin-top:6px}

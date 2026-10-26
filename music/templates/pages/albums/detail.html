@@ -1,0 +1,61 @@
+{% extends "layouts/app.html" %}
+{% block title %}{{ album.title }}{% endblock %}
+
+{% block content %}
+<div class="banner" data-seed="{{ album.title }}">
+  <div class="cover ph">
+    {% if album.cover %}
+      <img src="{{ album.cover.url }}" alt="">
+    {% else %}
+      <svg class="ic"><use href="#i-disc"></use></svg>
+    {% endif %}
+  </div>
+
+  <div>
+    <div class="kicker">Album</div>
+    <h1>{{ album.title }}</h1>
+    <p>
+      <a href="{{ album.artist.get_absolute_url }}"><strong>{{ album.artist.name }}</strong></a>
+      · {{ album.release_date|date:"Y" }}
+      · {{ tracks|length }} track{{ tracks|length|pluralize }}
+    </p>
+  </div>
+</div>
+
+<div class="actions">
+  {% if tracks %}
+    <button class="btn" type="button" data-play-all>
+      <svg class="ic fill"><use href="#i-play"></use></svg>
+      Play album
+    </button>
+  {% endif %}
+
+  {% if can_manage_album %}
+    <a class="btn ghost" href="{% url 'track_create' album.pk %}">
+      <svg class="ic"><use href="#i-plus"></use></svg>
+      Add track
+    </a>
+    <a class="btn ghost" href="{% url 'album_update' album.pk %}">
+      <svg class="ic"><use href="#i-edit"></use></svg>
+      Edit album
+    </a>
+    <a class="btn ghost" href="{% url 'album_delete' album.pk %}">
+      <svg class="ic"><use href="#i-trash"></use></svg>
+      Delete album
+    </a>
+  {% endif %}
+
+  {% if user.is_staff %}
+    <a class="btn ghost" href="{% url 'admin:music_album_change' album.pk %}">
+      <svg class="ic"><use href="#i-shield"></use></svg>
+      Open in admin
+    </a>
+  {% endif %}
+</div>
+
+{% if tracks %}
+  {% include "components/track_table.html" with show_number=True show_manage=True can_manage_album=can_manage_album %}
+{% else %}
+  {% include "components/empty_state.html" with icon="note" message="No tracks yet. Add the first one." %}
+{% endif %}
+{% endblock %}

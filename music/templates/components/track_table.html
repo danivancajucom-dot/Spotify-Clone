@@ -1,0 +1,6 @@
+<div class="table-wrap">
+<table class="tracks">
+  <thead><tr><th class="c-num">#</th><th>Title</th><th class="col-album">Album</th><th class="col-time">Time</th><th class="col-actions"><span class="sr">Actions</span></th></tr></thead>
+  <tbody>{% for track in tracks %}{% include "components/track_row.html" %}{% endfor %}</tbody>
+</table>
+</div>

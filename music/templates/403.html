@@ -1,0 +1,14 @@
+{# spotify_clone/music/templates/403.html #}
+{% extends "layouts/app.html" %}
+{% block title %}Not allowed{% endblock %}
+{% block content %}
+<div class="confirm-wrap" style="min-height:50vh;display:grid;place-items:center">
+  <div class="reveal" style="text-align:center;max-width:420px">
+    <div class="badge danger"><svg class="ic"><use href="#i-shield"/></svg></div>
+    <h1 style="font-size:1.8rem">You can't change this</h1>
+    <p class="muted">{{ exception|default:"Only the user who uploaded it can edit or delete it." }}</p>
+    <p class="muted">You can still play it, like it, and add it to your playlists.</p>
+    <a class="btn" href="javascript:history.back()" style="margin-top:14px"><svg class="ic"><use href="#i-back"/></svg>Go back</a>
+  </div>
+</div>
+{% endblock %}

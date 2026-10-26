@@ -1,0 +1,12 @@
+{% extends "layouts/base.html" %}
+{# Logged-in shell: sidebar + top bar + page content + player. Pages fill {% block content %}. #}
+{% block body %}
+<div class="app">
+  {% include "components/sidebar.html" %}
+  <div class="content">
+    {% include "components/topbar.html" %}
+    <main>{% block content %}{% endblock %}</main>
+  </div>
+</div>
+{% include "components/player.html" %}
+{% endblock %}

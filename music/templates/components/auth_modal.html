@@ -1,0 +1,30 @@
+{# Login / sign up dialog for the landing page. params: login_form, register_form #}
+<div class="modal" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title" data-open="{{ request.GET.auth }}">
+  <div class="auth-dialog">
+    <button type="button" class="icon-btn auth-close" id="auth-close" aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button>
+
+    <div class="brand"><span class="brand-mark"><svg class="ic"><use href="#i-note"/></svg></span>Spotify Clone</div>
+    <h2 id="auth-title">Welcome back</h2>
+
+    <div class="seg" role="tablist" aria-label="Log in or sign up">
+      <button type="button" role="tab" id="tab-login" data-tab="login" aria-selected="true">Log in</button>
+      <button type="button" role="tab" id="tab-register" data-tab="register" aria-selected="false">Sign up</button>
+      <span class="seg-pill"></span>
+    </div>
+
+    <form method="post" action="{% url 'login' %}" class="auth-panel" id="panel-login" role="tabpanel" aria-labelledby="tab-login" novalidate>
+      {% csrf_token %}
+      {% include "components/auth_fields.html" with form=login_form %}
+      <button class="btn block">Log in</button>
+      <p class="alt">New here? <button type="button" class="linkbtn accent" data-tab="register">Create an account</button></p>
+    </form>
+
+    <form method="post" action="{% url 'register' %}" class="auth-panel" id="panel-register" role="tabpanel" aria-labelledby="tab-register" novalidate hidden>
+      {% csrf_token %}
+      {% include "components/auth_fields.html" with form=register_form %}
+      <p class="hint">Use at least 8 characters and don't make it only numbers.</p>
+      <button class="btn block">Create account</button>
+      <p class="alt">Already have an account? <button type="button" class="linkbtn accent" data-tab="login">Log in</button></p>
+    </form>
+  </div>
+</div>

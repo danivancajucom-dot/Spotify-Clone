@@ -1,0 +1,5 @@
+{# params: artist #}
+<a class="card round" href="{{ artist.get_absolute_url }}">
+  <div class="art ph" data-seed="{{ artist.name }}">{% if artist.image %}<img src="{{ artist.image.url }}" alt="">{% else %}<svg class="ic"><use href="#i-mic"/></svg>{% endif %}</div>
+  <strong>{{ artist.name }}</strong><span class="muted">Artist</span>
+</a>

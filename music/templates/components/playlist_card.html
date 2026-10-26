@@ -1,0 +1,6 @@
+{# params: playlist #}
+<a class="card playlist" href="{{ playlist.get_absolute_url }}">
+  <div class="art ph" data-seed="{{ playlist.name }}"><svg class="ic"><use href="#i-list"/></svg></div>
+  <strong>{{ playlist.name }}</strong>
+  <span class="muted">{{ playlist.tracks.count }} track{{ playlist.tracks.count|pluralize }}</span>
+</a>

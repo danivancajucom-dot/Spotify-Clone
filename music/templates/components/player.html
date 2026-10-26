@@ -1,0 +1,68 @@
+<div class="player" id="player" data-turbo-permanent>
+  <div class="np">
+    <div class="cover ph" id="np-cover">
+      <svg class="ic">
+        <use href="#i-disc"></use>
+      </svg>
+    </div>
+
+    <div class="np-text">
+      <strong id="np-title">—</strong>
+      <span class="muted" id="np-artist"></span>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-row">
+      <button class="icon-btn" id="p-prev" type="button" aria-label="Previous">
+        <svg class="ic fill"><use href="#i-prev"></use></svg>
+      </button>
+
+      <button class="icon-btn big" id="p-toggle" type="button" aria-label="Play or pause">
+        <svg class="ic fill"><use href="#i-play"></use></svg>
+      </button>
+
+      <button class="icon-btn" id="p-next" type="button" aria-label="Next">
+        <svg class="ic fill"><use href="#i-next"></use></svg>
+      </button>
+    </div>
+
+    <div class="seek">
+      <span id="t-cur">0:00</span>
+      <input type="range" id="seek" min="0" max="100" step="0.1" value="0" aria-label="Seek">
+      <span id="t-dur">0:00</span>
+    </div>
+  </div>
+
+  <div class="vol">
+    <button
+      class="icon-btn queue-toggle"
+      id="p-queue-toggle"
+      type="button"
+      aria-label="Show play queue"
+      title="Queue"
+    >
+      <svg class="ic"><use href="#i-list"></use></svg>
+    </button>
+
+    <svg class="ic"><use href="#i-volume"></use></svg>
+
+    <input
+      type="range"
+      id="vol"
+      min="0"
+      max="1"
+      step="0.01"
+      value="0.8"
+      aria-label="Volume"
+    >
+  </div>
+</div>
+
+<div class="queue-panel" id="queue-panel" hidden aria-label="Play queue">
+  <div class="queue-head">
+    <strong>Up next</strong>
+    <button class="icon-btn" type="button" id="p-queue-close" aria-label="Close queue">×</button>
+  </div>
+  <ol id="queue-list" class="queue-list"></ol>
+</div>

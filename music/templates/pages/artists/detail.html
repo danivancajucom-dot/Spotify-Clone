@@ -1,0 +1,56 @@
+{% extends "layouts/app.html" %}
+{% block title %}{{ artist.name }}{% endblock %}
+
+{% block content %}
+<div class="banner artist" data-seed="{{ artist.name }}">
+  <div class="cover ph">
+    {% if artist.image %}
+      <img src="{{ artist.image.url }}" alt="">
+    {% else %}
+      <svg class="ic"><use href="#i-mic"></use></svg>
+    {% endif %}
+  </div>
+
+  <div>
+    <div class="kicker">Artist</div>
+    <h1>{{ artist.name }}</h1>
+    <p>{{ albums|length }} album{{ albums|length|pluralize }}</p>
+  </div>
+</div>
+
+<div class="actions">
+  <a class="btn" href="{% url 'album_create' %}?artist={{ artist.pk }}">
+    <svg class="ic"><use href="#i-plus"></use></svg>
+    Add album
+  </a>
+
+  {% if can_manage_artist %}
+    <a class="btn ghost" href="{% url 'artist_update' artist.pk %}">
+      <svg class="ic"><use href="#i-edit"></use></svg>
+      Edit
+    </a>
+    <a class="btn ghost" href="{% url 'artist_delete' artist.pk %}">
+      <svg class="ic"><use href="#i-trash"></use></svg>
+      Delete
+    </a>
+  {% endif %}
+
+  {% if user.is_staff %}
+    <a class="btn ghost" href="{% url 'admin:music_artist_change' artist.pk %}">
+      <svg class="ic"><use href="#i-shield"></use></svg>
+      Open in admin
+    </a>
+  {% endif %}
+</div>
+
+<p class="bio">{{ artist.bio|default:"No bio yet."|linebreaksbr }}</p>
+
+<h2>Albums</h2>
+<div class="grid stagger">
+  {% for album in albums %}
+    {% include "components/album_card.html" %}
+  {% empty %}
+    {% include "components/empty_state.html" with icon="disc" message="No albums for this artist yet." %}
+  {% endfor %}
+</div>
+{% endblock %}

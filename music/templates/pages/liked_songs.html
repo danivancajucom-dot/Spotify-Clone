@@ -1,0 +1,10 @@
+{% extends "layouts/app.html" %}
+{% block title %}Liked songs{% endblock %}
+{% block content %}
+<div class="banner liked" style="--h:300">
+  <div class="cover ph liked-cover"><svg class="ic fill"><use href="#i-heart"/></svg></div>
+  <div><div class="kicker">Playlist</div><h1>Liked songs</h1><p>{{ tracks|length }} song{{ tracks|length|pluralize }}</p></div>
+</div>
+{% if tracks %}{% include "components/track_table.html" with show_album=True %}
+{% else %}{% include "components/empty_state.html" with icon="heart" message="Tap the heart next to a track to save it here." %}{% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+/* =========== COMPONENT: hero banner (artist / album / playlist) =========== */
+/* ---------- banner ---------- */
+.banner{position:relative;display:flex;gap:28px;align-items:flex-end;padding:34px;margin:16px 0 22px;border-radius:22px;overflow:hidden;
+  background:linear-gradient(160deg,hsl(var(--h,150) 55% 30%),var(--bg2) 85%);isolation:isolate}
+.banner::before{content:"";position:absolute;inset:-40%;z-index:-1;background:radial-gradient(circle at 30% 30%,hsl(var(--h,150) 80% 55% / .35),transparent 45%);animation:drift 14s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(18%,12%) scale(1.15)}}
+.banner .cover{width:210px;height:210px;border-radius:14px;box-shadow:0 24px 50px rgba(0,0,0,.55);flex:none}
+.banner.artist .cover{border-radius:50%}
+.banner>div:last-child{min-width:0}
+.banner .kicker{font-size:.85rem;font-weight:700;color:rgba(255,255,255,.75)}
+.banner h1{font-size:clamp(2rem,6vw,4rem);margin:4px 0 10px;overflow-wrap:anywhere}
+.banner p{margin:0;color:rgba(255,255,255,.78)}
+.banner .banner-sub{margin-top:6px}
+.banner p a:hover{text-decoration:underline}
+.liked-cover{background:linear-gradient(135deg,#5b3df5,#b9a6ff)!important;color:#fff}
+.avatar-lg{border-radius:50%!important;font-size:5rem;font-family:var(--display);font-weight:800;color:#fff}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 24px}
+.bio{max-width:68ch;color:#d9d4e8;font-size:1.02rem}

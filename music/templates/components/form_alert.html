@@ -1,0 +1,4 @@
+{# params: form. Shows errors that don't belong to one field (e.g. wrong password) #}
+{% if form.non_field_errors %}
+<div class="form-alert" role="alert"><svg class="ic"><use href="#i-x"/></svg><div>{% for error in form.non_field_errors %}{{ error }} {% endfor %}</div></div>
+{% endif %}

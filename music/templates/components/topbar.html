@@ -1,0 +1,7 @@
+<header class="topbar">
+  <span class="greeting" id="greeting" data-name="{{ user.username }}"></span>
+  <form class="searchbox" method="get" action="{% url 'search' %}">
+    <svg class="ic"><use href="#i-search"/></svg>
+    <input type="search" name="q" placeholder="Search tracks, artists, albums" value="{{ q|default:'' }}" aria-label="Search">
+  </form>
+</header>

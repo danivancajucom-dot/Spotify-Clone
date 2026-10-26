@@ -1,0 +1,16 @@
+/* =========== COMPONENT: buttons =========== */
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;background:var(--green);color:#04180b;border:0;border-radius:999px;padding:0 22px;font:inherit;font-weight:700;line-height:1;white-space:nowrap;cursor:pointer;
+  transition:transform .2s var(--ease),box-shadow .2s,background .2s,border-color .2s;box-shadow:0 8px 24px rgba(30,215,96,.25)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(30,215,96,.38)}
+.btn:active{transform:scale(.97)}
+.btn.sm{min-height:36px;padding:0 16px;font-size:.92rem}
+.btn.lg{min-height:52px;padding:0 30px;font-size:1.05rem}
+.btn.block{width:100%}
+.btn.ghost{background:transparent;color:#fff;border:1px solid #4a4260;box-shadow:none}
+.btn.ghost:hover{border-color:#fff;background:rgba(255,255,255,.06)}
+.btn.danger{background:var(--red);color:#fff;box-shadow:0 8px 24px rgba(255,84,104,.25)}
+.btn.danger:hover{box-shadow:0 12px 30px rgba(255,84,104,.4)}
+.linkbtn{background:none;border:0;color:var(--muted);cursor:pointer;font:inherit;padding:0}
+.linkbtn.accent{color:var(--green);font-weight:700}
+.linkbtn.accent:hover{text-decoration:underline}

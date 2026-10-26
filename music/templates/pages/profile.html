@@ -1,0 +1,24 @@
+{% extends "layouts/app.html" %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="{% static 'music/css/pages/profile.css' %}">{% endblock %}
+{% block content %}
+<div class="banner" data-seed="{{ user.username }}">
+  <div class="cover ph avatar-lg">{{ user.username|slice:":1"|upper }}</div>
+  <div>
+    <div class="kicker">Profile</div>
+    <h1>{{ user.username }}</h1>
+    <p>{{ user.email|default:"No email set" }} — joined {{ user.date_joined|date:"F j, Y" }}</p>
+  </div>
+</div>
+<div class="stats stagger">
+  <div class="stat"><b>{{ playlist_count }}</b><span class="muted">Playlists</span></div>
+  <div class="stat"><b>{{ liked_count }}</b><span class="muted">Liked songs</span></div>
+</div>
+<h2>Recent playlists</h2>
+{% url 'playlist_create' as create_url %}
+<div class="grid stagger">
+  {% for playlist in playlists %}{% include "components/playlist_card.html" %}
+  {% empty %}{% include "components/empty_state.html" with icon="list" message="No playlists yet." cta_url=create_url cta_label="Create your first playlist" %}{% endfor %}
+</div>
+{% endblock %}

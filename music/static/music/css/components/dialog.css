@@ -1,0 +1,17 @@
+/* =========== COMPONENT: confirm dialog (centered) =========== */
+/* ---------- confirmation dialog (centered) ---------- */
+.modal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:rgba(5,3,10,.7);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s}
+.modal.open{opacity:1;pointer-events:auto}
+.dialog{width:min(400px,100%);background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:32px 28px 26px;text-align:center;box-shadow:0 40px 80px rgba(0,0,0,.6);transform:translateY(24px) scale(.94);transition:transform .4s var(--ease)}
+.modal.open .dialog{transform:none}
+.dialog .badge{margin-bottom:18px}
+.dialog.danger .badge{background:rgba(255,84,104,.15);color:var(--red)}
+.dialog h3{font-size:1.3rem;margin-bottom:8px}
+.dialog p{margin:0 auto 26px;max-width:32ch;color:var(--muted);text-wrap:balance;overflow-wrap:anywhere}
+.dialog-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dialog-actions .btn{width:100%;min-width:0}
+
+
+.badge{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;margin:0 auto 18px;background:rgba(30,215,96,.15);color:var(--green)}
+.badge.danger{background:rgba(255,84,104,.15);color:var(--red)}
+.badge .ic{width:26px;height:26px}

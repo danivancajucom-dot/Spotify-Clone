@@ -1,0 +1,6 @@
+{# params: icon, message, cta_url + cta_label (optional button) #}
+<div class="empty">
+  <svg class="ic"><use href="#i-{{ icon }}"/></svg>
+  <p>{{ message }}</p>
+  {% if cta_url %}<a class="btn" href="{{ cta_url }}"><svg class="ic"><use href="#i-plus"/></svg>{{ cta_label }}</a>{% endif %}
+</div>

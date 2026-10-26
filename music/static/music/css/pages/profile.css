@@ -1,0 +1,4 @@
+/* =========== PAGE: profile =========== */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:10px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;text-align:left}
+.stat b{display:block;font-family:var(--display);font-size:2.2rem}

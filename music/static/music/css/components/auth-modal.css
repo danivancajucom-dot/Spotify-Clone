@@ -1,0 +1,18 @@
+/* =========== COMPONENT: login / sign up dialog =========== */
+/* ---------- auth dialog ---------- */
+.auth-dialog{position:relative;width:min(440px,100%);max-height:calc(100vh - 40px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:32px 32px 28px;box-shadow:0 40px 90px rgba(0,0,0,.65);transform:translateY(28px) scale(.95);transition:transform .45s var(--ease)}
+.modal.open .auth-dialog{transform:none}
+.auth-dialog .brand{padding:0 0 14px}
+.auth-dialog h2{margin:0 0 18px;font-size:1.7rem}
+.auth-close{position:absolute;top:14px;right:14px}
+.auth-dialog .btn.block{margin-top:6px}
+.auth-panel:not([hidden]){animation:rise .35s var(--ease) both}
+.auth-panel .hint{margin:-4px 0 14px;color:var(--muted);font-size:.84rem}
+
+/* segmented tabs */
+.seg{position:relative;display:grid;grid-template-columns:1fr 1fr;padding:4px;margin-bottom:22px;border-radius:999px;background:var(--bg2);border:1px solid var(--line)}
+.seg button{position:relative;z-index:1;padding:9px 12px;border:0;border-radius:999px;background:none;color:var(--muted);font:inherit;font-weight:700;cursor:pointer;transition:color .25s}
+.seg button[aria-selected=true]{color:#04180b}
+.seg-pill{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:999px;background:var(--green);transition:transform .4s var(--ease)}
+.seg:has(#tab-register[aria-selected=true]) .seg-pill{transform:translateX(100%)}
+@media(max-width:520px){.auth-dialog{padding:26px 20px 22px}}

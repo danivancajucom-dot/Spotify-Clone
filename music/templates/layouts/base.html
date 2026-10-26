@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{% block title %}Spotify Clone{% endblock %}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Sora:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="{% static 'music/css/main.css' %}">
+  {% block page_css %}{% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+  {% include "components/icons.html" %}
+
+  <div id="dj-msgs" hidden>
+    {% for m in messages %}
+      <span data-tag="{{ m.tags }}">{{ m }}</span>
+    {% endfor %}
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  {% block body %}{% endblock %}
+
+  {% include "components/confirm_dialog.html" %}
+
+  <!-- Preserve the player when navigating between internal pages -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.12/dist/turbo.es2017-umd.js"
+    defer
+  ></script>
+
+  <script type="module" src="{% static 'music/js/main.js' %}"></script>
+
+</body>
+</html>

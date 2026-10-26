@@ -1,0 +1,6 @@
+{# params: album #}
+<a class="card" href="{{ album.get_absolute_url }}">
+  <div class="art ph" data-seed="{{ album.title }}">{% if album.cover %}<img src="{{ album.cover.url }}" alt="">{% else %}<svg class="ic"><use href="#i-disc"/></svg>{% endif %}</div>
+  <strong>{{ album.title }}</strong>
+  <span class="muted">{{ album.release_date.year }} · {{ album.artist.name }}</span>
+</a>

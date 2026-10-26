@@ -1,0 +1,18 @@
+{% extends "layouts/app.html" %}
+{% load static %}
+{% block title %}Delete {{ label }}{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="{% static 'music/css/pages/confirm-delete.css' %}">{% endblock %}
+{% block content %}
+<div class="confirm-wrap">
+  <div class="confirm-card reveal">
+    <div class="badge danger"><svg class="ic"><use href="#i-trash"/></svg></div>
+    <h1>Delete this {{ label|lower }}?</h1>
+    <p><strong>{{ object }}</strong> will be permanently deleted. This can't be undone.</p>
+    <form method="post" class="confirm-actions">
+      {% csrf_token %}
+      <a class="btn ghost" href="{{ cancel_url }}">Keep it</a>
+      <button class="btn danger"><svg class="ic"><use href="#i-trash"/></svg>Delete {{ label|lower }}</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

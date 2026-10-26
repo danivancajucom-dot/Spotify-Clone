@@ -1,0 +1,14 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{# Centered card used by the standalone login and register pages. Pages fill {% block auth %}. #}
+{% block page_css %}<link rel="stylesheet" href="{% static 'music/css/pages/auth.css' %}">{% endblock %}
+{% block body %}
+<div class="auth-wrap">
+  <div class="blob a"></div><div class="blob b"></div>
+  <div class="auth-card">
+    <a class="back-home" href="{% url 'home' %}"><svg class="ic"><use href="#i-back"/></svg>Back to home</a>
+    <div class="brand"><span class="brand-mark"><svg class="ic"><use href="#i-note"/></svg></span>Spotify Clone</div>
+    {% block auth %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

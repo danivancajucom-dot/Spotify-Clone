@@ -1,0 +1,5 @@
+{# params: title, subtitle (optional), action_url + action_label (optional "+" button) #}
+<div class="page-head">
+  <div><h1>{{ title }}</h1>{% if subtitle %}<p class="muted">{{ subtitle }}</p>{% endif %}</div>
+  {% if action_url %}<a class="btn" href="{{ action_url }}"><svg class="ic"><use href="#i-plus"/></svg>{{ action_label }}</a>{% endif %}
+</div>

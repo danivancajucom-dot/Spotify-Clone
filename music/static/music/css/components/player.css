@@ -1,0 +1,250 @@
+.player {
+  position: fixed;
+  left: 268px;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 28px;
+  background: linear-gradient(
+    100deg,
+    rgba(12, 20, 14, .97),
+    rgba(7, 11, 8, .98)
+  );
+  border: 1px solid rgba(55, 245, 138, .18);
+  box-shadow:
+    0 -12px 45px rgba(0, 0, 0, .35),
+    0 0 35px rgba(31, 180, 91, .06);
+  backdrop-filter: blur(22px);
+  transform: translateY(110%);
+  transition: transform .5s var(--ease);
+}
+
+.player.show {
+  transform: none;
+}
+
+.np {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.np .cover {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  flex: none;
+}
+
+.np-text {
+  min-width: 0;
+  text-align: left;
+}
+
+.np strong,
+.np span {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.ctrl-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ctrl-row .big {
+  width: 42px;
+  height: 42px;
+  background: var(--green);
+  color: #06140a;
+  box-shadow: 0 0 22px rgba(55, 245, 138, .2);
+}
+
+.ctrl-row .big:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 30px rgba(55, 245, 138, .35);
+}
+
+.player .icon-btn:hover {
+  color: var(--green);
+  background: rgba(55, 245, 138, .10);
+}
+
+.seek {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  font-size: .78rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  border-radius: 5px;
+  padding: 0;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    var(--green) var(--p, 0%),
+    #29382d var(--p, 0%)
+  );
+  cursor: pointer;
+  box-shadow: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+input[type="range"]:hover::-webkit-slider-thumb {
+  opacity: 1;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.vol {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.vol input {
+  width: 110px;
+}
+
+.queue-toggle {
+  color: var(--green);
+}
+
+.queue-panel {
+  position: fixed;
+  right: 24px;
+  bottom: 112px;
+  z-index: 80;
+  width: min(360px, calc(100vw - 32px));
+  max-height: min(55vh, 480px);
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid var(--line2);
+  border-radius: 18px;
+  background: rgba(10, 17, 12, .97);
+  backdrop-filter: blur(22px);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .55);
+}
+
+.queue-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.queue-head strong {
+  font-family: var(--display);
+  font-size: 1.05rem;
+}
+
+.queue-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.queue-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px;
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: .9rem;
+  cursor: pointer;
+}
+
+.queue-list li:hover,
+.queue-list li.active {
+  background: var(--panel2);
+  color: var(--text);
+}
+
+.queue-list li.active {
+  box-shadow: inset 3px 0 var(--green);
+}
+
+.queue-list .q-title {
+  font-weight: 700;
+  color: inherit;
+  display: block;
+}
+
+.queue-list .q-artist {
+  display: block;
+  font-size: .78rem;
+  color: var(--muted);
+}
+
+.queue-list .q-number {
+  width: 22px;
+  text-align: center;
+  color: var(--green);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 900px) {
+  .player {
+    left: 210px;
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 650px) {
+  .player {
+    left: 0;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .player .vol {
+    display: none;
+  }
+
+  .queue-panel {
+    right: 12px;
+    bottom: 104px;
+  }
+}

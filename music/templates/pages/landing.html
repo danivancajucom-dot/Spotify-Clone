@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block title %}Spotify Clone — your music, your library{% endblock %}
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'music/css/pages/landing.css' %}">
+<link rel="stylesheet" href="{% static 'music/css/components/auth-modal.css' %}">
+{% endblock %}
+{% block body_class %}landing{% endblock %}
+
+{% block body %}
+<div class="lp">
+  <div class="lp-glow a"></div><div class="lp-glow b"></div>
+
+  <header class="lp-nav">
+    <a class="brand" href="{% url 'home' %}"><span class="brand-mark"><svg class="ic"><use href="#i-note"/></svg></span>Spotify Clone</a>
+    <div class="lp-nav-actions">
+      <a class="btn ghost sm" href="{% url 'login' %}" data-auth-open="login">Log in</a>
+      <a class="btn sm" href="{% url 'register' %}" data-auth-open="register">Sign up</a>
+    </div>
+  </header>
+
+  <section class="lp-hero">
+    <div class="lp-copy">
+      <h1>Every song you love, in one library.</h1>
+      <p class="lp-lead">Browse artists and albums, build playlists that only you can edit, and keep your favourite tracks one tap away.</p>
+      <div class="lp-cta">
+        <a class="btn lg" href="{% url 'register' %}" data-auth-open="register">Get started<svg class="ic"><use href="#i-arrow"/></svg></a>
+        <a class="btn ghost lg" href="{% url 'login' %}" data-auth-open="login">I have an account</a>
+      </div>
+      {% if track_total %}
+      <p class="lp-note"><span class="eq on"><i></i><i></i><i></i></span>{{ track_total }} track{{ track_total|pluralize }} from {{ artist_total }} artist{{ artist_total|pluralize }} ready to play</p>
+      {% endif %}
+    </div>
+
+    <div class="lp-collage" aria-hidden="true">
+      {% for t in tiles %}
+      <figure class="tile t{{ forloop.counter }}">
+        <div class="ph" data-seed="{{ t.title }}">{% if t.cover %}<img src="{{ t.cover }}" alt="">{% else %}<svg class="ic"><use href="#i-disc"/></svg>{% endif %}</div>
+        <figcaption><strong>{{ t.title }}</strong><span>{{ t.sub }}</span></figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="lp-features">
+    <article>
+      <span class="f-ic"><svg class="ic"><use href="#i-mic"/></svg></span>
+      <h2>Browse by artist and album</h2>
+      <p>Jump from an artist to every album they released, then straight into the track list.</p>
+    </article>
+    <article>
+      <span class="f-ic"><svg class="ic"><use href="#i-list"/></svg></span>
+      <h2>Playlists that are yours</h2>
+      <p>Create as many playlists as you like. Nobody else can see or change them.</p>
+    </article>
+    <article>
+      <span class="f-ic"><svg class="ic"><use href="#i-heart"/></svg></span>
+      <h2>Like it and it's saved</h2>
+      <p>Tap the heart on any track and it lands in your Liked songs, ready whenever you are.</p>
+    </article>
+  </section>
+
+  <section class="lp-final">
+    <h2>Ready to press play?</h2>
+    <a class="btn lg" href="{% url 'register' %}" data-auth-open="register">Create your free account</a>
+  </section>
+
+  <footer class="lp-foot">Spotify Clone · a Django school project</footer>
+</div>
+
+{% include "components/auth_modal.html" %}
+{% endblock %}

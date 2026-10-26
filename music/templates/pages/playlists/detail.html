@@ -1,0 +1,45 @@
+{% extends "layouts/app.html" %}
+{% block title %}{{ playlist.name }}{% endblock %}
+
+{% block content %}
+<div class="banner" data-seed="{{ playlist.name }}">
+  <div class="cover ph">
+    <svg class="ic"><use href="#i-list"></use></svg>
+  </div>
+
+  <div>
+    <div class="kicker">Playlist</div>
+    <h1>{{ playlist.name }}</h1>
+    <p>{{ playlist.description|default:"No description." }}</p>
+    <p class="banner-sub">
+      {{ tracks|length }} track{{ tracks|length|pluralize }}
+    </p>
+  </div>
+</div>
+
+<div class="actions">
+  {% if tracks %}
+    <button class="btn" type="button" data-play-all>
+      <svg class="ic fill"><use href="#i-play"></use></svg>
+      Play playlist
+    </button>
+  {% endif %}
+
+  {% if can_manage_playlist %}
+    <a class="btn ghost" href="{% url 'playlist_update' playlist.pk %}">
+      <svg class="ic"><use href="#i-edit"></use></svg>
+      Edit
+    </a>
+    <a class="btn ghost" href="{% url 'playlist_delete' playlist.pk %}">
+      <svg class="ic"><use href="#i-trash"></use></svg>
+      Delete
+    </a>
+  {% endif %}
+</div>
+
+{% if tracks %}
+  {% include "components/track_table.html" with show_album=True %}
+{% else %}
+  {% include "components/empty_state.html" with icon="note" message="This playlist is empty. Open an album and tap + on a track to add it." %}
+{% endif %}
+{% endblock %}

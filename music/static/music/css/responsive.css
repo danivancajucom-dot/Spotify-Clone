@@ -1,0 +1,18 @@
+/* =========== RESPONSIVE + REDUCED MOTION =========== */
+/* ---------- responsive & motion ---------- */
+@media(max-width:900px){
+  .app{grid-template-columns:1fr}
+  .side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:12px;gap:4px;overflow:visible}
+  .side .brand,.side .spacer,.nav-label{display:none}
+  .nav-group{flex-direction:row;gap:4px}
+  .side-foot{flex-direction:row;margin-left:auto;padding:0;border:0;gap:6px}
+  .side-user .who{display:none}.side-user{padding:6px}.logout-btn{width:auto;padding:8px 12px}
+  .nav-link{padding:8px 12px}
+  .topbar{padding:12px 18px}.greeting{display:none}.searchbox{max-width:none}
+  main{padding:6px 18px 150px}
+  .banner{flex-direction:column;align-items:flex-start;padding:22px}.banner .cover{width:150px;height:150px}
+  .player{left:0;grid-template-columns:1fr auto;padding:10px 14px}.vol{display:none}.seek{display:none}
+  .col-album,.col-time{display:none}
+  .form-card{padding:22px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0ms!important;transition-duration:.01ms!important}}

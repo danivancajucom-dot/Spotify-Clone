@@ -1,0 +1,51 @@
+/* =========== COMPONENT: form fields, errors, password rules =========== */
+/* ---------- forms ---------- */
+input,textarea,select{width:100%;background:var(--bg2);color:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font:inherit;line-height:1.4;transition:border-color .2s,box-shadow .2s,background .2s}
+input::placeholder,textarea::placeholder{color:#6d6488}
+input:hover,textarea:hover,select:hover{border-color:var(--line2)}
+input:focus,textarea:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(30,215,96,.18);outline:none;background:var(--panel)}
+textarea{resize:vertical;min-height:110px}
+select{appearance:none;-webkit-appearance:none;padding-right:42px;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a59fb8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center}
+select option{background:var(--panel);color:#fff}
+input[type=file]{padding:9px}
+input[type=checkbox],input[type=radio]{width:auto}
+input[type=date]{min-height:46px}
+.form-card{width:100%;max-width:620px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:30px;box-shadow:0 24px 60px rgba(0,0,0,.25)}
+.field{margin:0 0 20px;padding:0;border:0;min-width:0}
+.field>label,.field>legend{display:block;padding:0;margin:0 0 8px;font-weight:700;font-size:.92rem;text-align:left}
+.req{color:var(--green);margin-left:4px}
+.page-head .req{margin-left:0}
+.helptext{display:block;color:var(--muted);font-size:.82rem;margin-top:6px;text-align:left}
+.errorlist{color:var(--red);list-style:none;padding:0;margin:4px 0;font-size:.85rem}
+.form-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+.form-actions .btn{min-width:120px}
+
+/* password show / hide */
+.pw-wrap{position:relative}
+.pw-wrap input{padding-right:48px}
+.pw-toggle{position:absolute;top:50%;right:6px;transform:translateY(-50%);width:36px;height:36px;display:grid;place-items:center;border:0;border-radius:50%;background:none;color:var(--muted);cursor:pointer;transition:color .2s,background .2s}
+.pw-toggle:hover{color:#fff;background:var(--panel2)}
+
+/* ---------- field errors & password rules ---------- */
+@keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.field-error{display:flex;gap:6px;align-items:flex-start;color:#ff7a8a;font-size:.86rem;margin-top:8px;text-align:left;animation:rise .3s var(--ease) both}
+.field-error .ic{margin-top:.2em}
+.field:not(.has-error) .field-error{display:none}
+.has-error input,.has-error textarea,.has-error select{border-color:var(--red);box-shadow:0 0 0 3px rgba(255,84,104,.15)}
+.has-error .dz{border-color:var(--red)}
+.form-alert{display:flex;gap:10px;align-items:flex-start;color:#ff9aa7;background:rgba(255,84,104,.09);border:1px solid rgba(255,84,104,.3);border-radius:12px;padding:12px 14px;margin:0 0 20px;font-size:.9rem;text-align:left;animation:rise .35s var(--ease) both}
+.form-alert .ic{margin-top:.2em}
+.pw-rules{margin:0 0 18px;padding:14px 16px;border-radius:12px;background:rgba(255,84,104,.07);border:1px solid rgba(255,84,104,.28);text-align:left;animation:rise .4s var(--ease) both}
+.pw-rules b{display:block;margin-bottom:8px;font-size:.9rem}
+.pw-rules ul{list-style:none;margin:0;padding:0;display:grid;gap:5px;font-size:.85rem}
+.pw-rules li{color:var(--muted);display:flex;gap:8px;align-items:center;transition:color .2s}
+.pw-rules li::before{content:"\2022";width:14px;text-align:center}
+.pw-rules li.bad{color:#ff8a98}.pw-rules li.bad::before{content:"\2715";color:var(--red)}
+.pw-rules li.ok{color:#8ff0b0}.pw-rules li.ok::before{content:"\2713";color:var(--green)}
+
+
+p.alt{margin:20px 0 0;text-align:center;color:var(--muted)}
+p.alt a{color:var(--green);font-weight:700}
+p.alt a:hover{text-decoration:underline}

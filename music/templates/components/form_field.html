@@ -1,0 +1,13 @@
+{# params: field, hide_req (optional), hide_help (optional) #}
+<div class="field {% if field.errors %}has-error{% endif %}">
+  <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required and not hide_req %}<span class="req" aria-hidden="true">*</span>{% endif %}</label>
+  {% if field.field.widget.input_type == "file" %}
+    <div class="dz" {% if field.initial %}data-current="{{ field.initial.url }}" data-current-name="{{ field.initial.name }}"{% endif %}>{{ field }}</div>
+  {% else %}
+    {{ field }}
+  {% endif %}
+  {% if field.help_text and not hide_help %}<small class="helptext">{{ field.help_text }}</small>{% endif %}
+  {% for error in field.errors %}
+    <div class="field-error"><svg class="ic"><use href="#i-x"/></svg><span>{{ error }}</span></div>
+  {% endfor %}
+</div>

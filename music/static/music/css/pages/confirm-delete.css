@@ -1,0 +1,9 @@
+/* =========== PAGE: delete confirmation =========== */
+/* ---------- delete confirmation page ---------- */
+.confirm-wrap{min-height:calc(100vh - 220px);display:grid;place-items:center;padding:10px 0}
+.confirm-card{width:min(460px,100%);padding:36px 32px 30px;border-radius:22px;background:var(--panel);border:1px solid var(--line);text-align:center;box-shadow:0 30px 70px rgba(0,0,0,.4)}
+.confirm-card h1{font-size:1.6rem;margin:0 0 10px}
+.confirm-card p{margin:0 auto 26px;max-width:34ch;color:var(--muted);overflow-wrap:anywhere}
+.confirm-card p strong{color:#fff}
+.confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.confirm-actions .btn{width:100%}
