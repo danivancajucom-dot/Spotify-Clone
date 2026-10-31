@@ -1,3 +1,4 @@
+{# spotify_clone/music/templates/pages/artists/detail.html #}
 {% extends "layouts/app.html" %}
 {% block title %}{{ artist.name }}{% endblock %}
 
@@ -14,12 +15,31 @@
   <div>
     <div class="kicker">Artist</div>
     <h1>{{ artist.name }}</h1>
-    <p>{{ albums|length }} album{{ albums|length|pluralize }}</p>
+    <p>
+      {{ albums|length }} album{{ albums|length|pluralize }}
+      · {{ follower_total }} follower{{ follower_total|pluralize }}
+    </p>
   </div>
 </div>
 
 <div class="actions">
-  <a class="btn" href="{% url 'album_create' %}?artist={{ artist.pk }}">
+  <form method="post" action="{% url 'toggle_artist_follow' artist.pk %}" class="inline-form">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+    {% if is_following %}
+      <button class="btn ghost" type="submit">
+        <svg class="ic fill"><use href="#i-heart"></use></svg>
+        Liked artist
+      </button>
+    {% else %}
+      <button class="btn" type="submit">
+        <svg class="ic"><use href="#i-heart"></use></svg>
+        Like artist
+      </button>
+    {% endif %}
+  </form>
+
+  <a class="btn ghost" href="{% url 'album_create' %}?artist={{ artist.pk }}">
     <svg class="ic"><use href="#i-plus"></use></svg>
     Add album
   </a>

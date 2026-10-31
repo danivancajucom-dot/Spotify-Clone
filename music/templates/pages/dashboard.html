@@ -1,0 +1,275 @@
+{% extends "layouts/app.html" %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block page_css %}
+<link
+  rel="stylesheet"
+  href="{% static 'music/css/pages/dashboard.css' %}"
+>
+{% endblock %}
+
+{% block content %}
+
+<div class="page-head">
+
+  <div>
+    <span class="kicker">Your music space</span>
+
+    <h1>Dashboard</h1>
+
+    <p class="muted">
+      Your music, your library, and artists picked for you.
+    </p>
+  </div>
+
+</div>
+
+
+<!-- PROFILE -->
+
+<section class="dash-profile">
+
+  <div
+    class="dash-avatar ph"
+    data-seed="{{ user.username }}"
+  >
+
+    {% if profile_obj.avatar %}
+
+      <img
+        src="{{ profile_obj.avatar.url }}"
+        alt="{{ user.username }}'s profile picture"
+      >
+
+    {% else %}
+
+      {{ user.username|slice:":1"|upper }}
+
+    {% endif %}
+
+  </div>
+
+
+  <div class="dash-profile-info">
+
+    <h2>
+      {{ user.get_full_name|default:user.username }}
+    </h2>
+
+    <p class="muted">
+
+      {% if profile_obj.bio %}
+
+        {{ profile_obj.bio }}
+
+      {% else %}
+
+        No bio yet. Tell people what you listen to.
+
+      {% endif %}
+
+    </p>
+
+
+    <div class="dash-stats">
+
+      <span>
+        <b>{{ playlist_count }}</b>
+        Playlists
+      </span>
+
+      <span>
+        <b>{{ liked_count }}</b>
+        Liked songs
+      </span>
+
+      <span>
+        <b>{{ followed_count }}</b>
+        Liked artists
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <a class="btn ghost" href="{% url 'profile' %}">
+
+    <svg class="ic">
+      <use href="#i-edit"/>
+    </svg>
+
+    Edit profile
+
+  </a>
+
+</section>
+
+
+<!-- COMMUNITY PLAYLISTS -->
+
+<section class="discover-section">
+
+  <div class="section-head">
+
+    <div>
+
+      <h2>Community playlists</h2>
+
+      <p class="muted">
+        Recently created public playlists from everyone.
+      </p>
+
+    </div>
+
+    <a
+      class="text-link"
+      href="{% url 'playlist_list' %}"
+    >
+      View all
+    </a>
+
+  </div>
+
+
+  <div class="grid stagger">
+
+    {% for playlist in playlists %}
+
+      {% include "components/playlist_card.html" %}
+
+    {% empty %}
+
+      {% include "components/empty_state.html" with icon="list" message="No public playlists yet. Create a playlist and make it public to share it with everyone." %}
+
+    {% endfor %}
+
+  </div>
+
+</section>
+
+
+<!-- ALL ALBUMS -->
+
+<section class="discover-section">
+
+  <div class="section-head">
+
+    <div>
+
+      <h2>All albums</h2>
+
+      <p class="muted">
+        Every album in the library.
+      </p>
+
+    </div>
+
+    <a
+      class="text-link"
+      href="{% url 'album_create' %}"
+    >
+      + Add album
+    </a>
+
+  </div>
+
+
+  <div class="grid stagger">
+
+    {% for album in albums %}
+
+      {% include "components/album_card.html" %}
+
+    {% empty %}
+
+      {% include "components/empty_state.html" with icon="disc" message="No albums yet. Add an artist first, then an album." %}
+
+    {% endfor %}
+
+  </div>
+
+</section>
+
+
+<!-- RECOMMENDED ARTISTS -->
+
+<section class="discover-section">
+
+  <div class="section-head">
+
+    <div>
+
+      <h2>Artists you might like</h2>
+
+      <p class="muted">
+        Picked from the songs you liked and what other listeners follow.
+      </p>
+
+    </div>
+
+    <a
+      class="text-link"
+      href="{% url 'artist_list' %}"
+    >
+      See all artists
+    </a>
+
+  </div>
+
+
+  <div class="grid stagger">
+
+    {% for artist in recommended_artists %}
+
+      {% include "components/artist_follow_card.html" %}
+
+    {% empty %}
+
+      {% include "components/empty_state.html" with icon="mic" message="No new recommendations right now. You already like every artist, or none have been added yet." %}
+
+    {% endfor %}
+
+  </div>
+
+</section>
+
+
+<!-- LIKED ARTISTS -->
+
+<section class="discover-section">
+
+  <div class="section-head">
+
+    <div>
+
+      <h2>Your liked artists</h2>
+
+      <p class="muted">
+        Artists you have liked.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="grid stagger">
+
+    {% for artist in followed_artists %}
+
+      {% include "components/artist_follow_card.html" %}
+
+    {% empty %}
+
+      {% include "components/empty_state.html" with icon="heart" message="You haven't liked any artist yet. Tap “Like artist” on a recommendation." %}
+
+    {% endfor %}
+
+  </div>
+
+</section>
+
+{% endblock %}

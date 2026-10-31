@@ -1,6 +1,44 @@
 {# params: playlist #}
+
 <a class="card playlist" href="{{ playlist.get_absolute_url }}">
-  <div class="art ph" data-seed="{{ playlist.name }}"><svg class="ic"><use href="#i-list"/></svg></div>
+
+  <div
+    class="art ph"
+    data-seed="{{ playlist.name }}"
+  >
+
+    {% if playlist.cover %}
+
+      <img
+        src="{{ playlist.cover.url }}"
+        alt="{{ playlist.name }} cover"
+      >
+
+    {% else %}
+
+      <svg class="ic">
+        <use href="#i-list"/>
+      </svg>
+
+    {% endif %}
+
+  </div>
+
   <strong>{{ playlist.name }}</strong>
-  <span class="muted">{{ playlist.tracks.count }} track{{ playlist.tracks.count|pluralize }}</span>
+
+  <span class="muted">
+    By {{ playlist.owner.get_full_name|default:playlist.owner.username }}
+  </span>
+
+  <span class="muted">
+    {{ playlist.tracks.count }}
+    track{{ playlist.tracks.count|pluralize }}
+    ·
+    {% if playlist.is_public %}
+      Public
+    {% else %}
+      Private
+    {% endif %}
+  </span>
+
 </a>

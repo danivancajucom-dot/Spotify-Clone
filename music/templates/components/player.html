@@ -1,4 +1,7 @@
+
 <div class="player" id="player" data-turbo-permanent>
+
+  <!-- Current track -->
   <div class="np">
     <div class="cover ph" id="np-cover">
       <svg class="ic">
@@ -12,40 +15,82 @@
     </div>
   </div>
 
+  <!-- Playback controls -->
   <div class="controls">
     <div class="ctrl-row">
-      <button class="icon-btn" id="p-prev" type="button" aria-label="Previous">
-        <svg class="ic fill"><use href="#i-prev"></use></svg>
+      <button
+        class="icon-btn"
+        id="p-shuffle"
+        type="button"
+        aria-label="Shuffle queue"
+        aria-pressed="false"
+        title="Shuffle queue"
+      >
+        <svg class="ic"><use href="#i-shuffle"/></svg>
       </button>
 
-      <button class="icon-btn big" id="p-toggle" type="button" aria-label="Play or pause">
-        <svg class="ic fill"><use href="#i-play"></use></svg>
+      <button
+        class="icon-btn"
+        id="p-prev"
+        type="button"
+        aria-label="Previous track"
+        title="Previous track"
+      >
+        <svg class="ic fill"><use href="#i-prev"/></svg>
       </button>
 
-      <button class="icon-btn" id="p-next" type="button" aria-label="Next">
-        <svg class="ic fill"><use href="#i-next"></use></svg>
+      <button
+        class="icon-btn big"
+        id="p-toggle"
+        type="button"
+        aria-label="Play or pause"
+      >
+        <svg class="ic fill"><use href="#i-play"/></svg>
+      </button>
+
+      <button
+        class="icon-btn"
+        id="p-next"
+        type="button"
+        aria-label="Next track"
+        title="Next track"
+      >
+        <svg class="ic fill"><use href="#i-next"/></svg>
       </button>
     </div>
 
     <div class="seek">
       <span id="t-cur">0:00</span>
-      <input type="range" id="seek" min="0" max="100" step="0.1" value="0" aria-label="Seek">
+
+      <input
+        type="range"
+        id="seek"
+        min="0"
+        max="100"
+        step="0.1"
+        value="0"
+        aria-label="Seek through track"
+      >
+
       <span id="t-dur">0:00</span>
     </div>
   </div>
 
+  <!-- Volume and queue -->
   <div class="vol">
     <button
       class="icon-btn queue-toggle"
       id="p-queue-toggle"
       type="button"
       aria-label="Show play queue"
+      aria-expanded="false"
+      aria-controls="p-queue-panel"
       title="Queue"
     >
-      <svg class="ic"><use href="#i-list"></use></svg>
+      <svg class="ic"><use href="#i-list"/></svg>
     </button>
 
-    <svg class="ic"><use href="#i-volume"></use></svg>
+    <svg class="ic"><use href="#i-volume"/></svg>
 
     <input
       type="range"
@@ -57,12 +102,38 @@
       aria-label="Volume"
     >
   </div>
+
 </div>
 
-<div class="queue-panel" id="queue-panel" hidden aria-label="Play queue">
+<!-- Queue panel -->
+<aside
+  class="queue-panel"
+  id="p-queue-panel"
+  hidden
+  aria-label="Play queue"
+>
   <div class="queue-head">
-    <strong>Up next</strong>
-    <button class="icon-btn" type="button" id="p-queue-close" aria-label="Close queue">×</button>
+    <div>
+      <strong>Up next</strong>
+      <p class="muted queue-hint">
+        Select a song to play it, or remove it from the queue.
+      </p>
+    </div>
+
+    <button
+      class="icon-btn"
+      id="p-queue-close"
+      type="button"
+      aria-label="Close queue"
+      title="Close queue"
+    >
+      ×
+    </button>
   </div>
-  <ol id="queue-list" class="queue-list"></ol>
-</div>
+
+  <p class="muted queue-empty" id="p-queue-empty">
+    Play or add a track to start your queue.
+  </p>
+
+  <ol class="queue-list" id="p-queue-list"></ol>
+</aside>

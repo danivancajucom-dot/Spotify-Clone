@@ -1,34 +1,187 @@
+{# spotify_clone/music/templates/components/sidebar.html #}
+
 <nav class="side" aria-label="Main">
-  <a class="brand" href="{% url 'artist_list' %}"><span class="brand-mark"><svg class="ic"><use href="#i-note"/></svg></span>Spotify Clone</a>
+
+  <!-- BRAND -->
+
+  <a class="brand" href="{% url 'dashboard' %}">
+
+    <span class="brand-mark">
+      <svg class="ic">
+        <use href="#i-note"/>
+      </svg>
+    </span>
+
+    Spotify Clone
+
+  </a>
+
 
   {% with page=request.resolver_match.url_name %}
+
+  <!-- HOME -->
+
   <div class="nav-group">
+
+    <span class="nav-label">Home</span>
+
+    <a
+      class="nav-link {% if page == 'dashboard' %}active{% endif %}"
+      href="{% url 'dashboard' %}"
+    >
+      <svg class="ic">
+        <use href="#i-note"/>
+      </svg>
+      Dashboard
+    </a>
+
+  </div>
+
+
+  <!-- LIBRARY -->
+
+  <div class="nav-group">
+
     <span class="nav-label">Library</span>
-    <a class="nav-link {% if page == 'artist_list' or page == 'artist_detail' or page == 'artist_create' or page == 'artist_update' %}active{% endif %}" href="{% url 'artist_list' %}"><svg class="ic"><use href="#i-mic"/></svg>Artists</a>
-    <a class="nav-link {% if page == 'album_list' or page == 'album_detail' or page == 'album_create' or page == 'album_update' %}active{% endif %}" href="{% url 'album_list' %}"><svg class="ic"><use href="#i-disc"/></svg>Albums</a>
+
+    <a
+      class="nav-link {% if page == 'artist_list' or page == 'artist_detail' or page == 'artist_create' or page == 'artist_update' %}active{% endif %}"
+      href="{% url 'artist_list' %}"
+    >
+      <svg class="ic">
+        <use href="#i-mic"/>
+      </svg>
+      Artists
+    </a>
+
+    <a
+      class="nav-link {% if page == 'album_list' or page == 'album_detail' or page == 'album_create' or page == 'album_update' %}active{% endif %}"
+      href="{% url 'album_list' %}"
+    >
+      <svg class="ic">
+        <use href="#i-disc"/>
+      </svg>
+      Albums
+    </a>
+
   </div>
+
+
+  <!-- PERSONAL LIBRARY -->
+
   <div class="nav-group">
+
     <span class="nav-label">Yours</span>
-    <a class="nav-link {% if page == 'playlist_list' or page == 'playlist_detail' or page == 'playlist_create' or page == 'playlist_update' %}active{% endif %}" href="{% url 'playlist_list' %}"><svg class="ic"><use href="#i-list"/></svg>My playlists</a>
-    <a class="nav-link {% if page == 'liked_songs' %}active{% endif %}" href="{% url 'liked_songs' %}"><svg class="ic"><use href="#i-heart"/></svg>Liked songs</a>
+
+    <a
+      class="nav-link {% if page == 'playlist_list' or page == 'playlist_detail' or page == 'playlist_create' or page == 'playlist_update' %}active{% endif %}"
+      href="{% url 'playlist_list' %}"
+    >
+      <svg class="ic">
+        <use href="#i-list"/>
+      </svg>
+      My playlists
+    </a>
+
+    <a
+      class="nav-link {% if page == 'liked_songs' %}active{% endif %}"
+      href="{% url 'liked_songs' %}"
+    >
+      <svg class="ic">
+        <use href="#i-heart"/>
+      </svg>
+      Liked songs
+    </a>
+
   </div>
+
   {% endwith %}
 
+
+  <!-- ADMIN PANEL -->
+
   {% if user.is_staff %}
+
   <div class="nav-group">
+
     <span class="nav-label">Admin</span>
-    <a class="nav-link admin-link" href="{% url 'admin:index' %}"><svg class="ic"><use href="#i-shield"/></svg>Admin panel</a>
+
+    <a
+      class="nav-link admin-link"
+      href="{% url 'admin_dashboard' %}"
+    >
+      <svg class="ic">
+        <use href="#i-shield"/>
+      </svg>
+      Admin panel
+    </a>
+
   </div>
+
   {% endif %}
 
+
   <div class="spacer"></div>
+
+
+  <!-- USER ACCOUNT -->
+
   <div class="side-foot">
-    <a class="side-user {% if request.resolver_match.url_name == 'profile' %}active{% endif %}" href="{% url 'profile' %}">
-      <span class="avatar">{{ user.username|slice:":1"|upper }}</span>
-      <span class="who"><strong>{{ user.username }}</strong><small>{% if user.is_superuser %}Administrator{% elif user.is_staff %}Staff{% else %}View profile{% endif %}</small></span>
+
+    <a
+      class="side-user {% if request.resolver_match.url_name == 'profile' %}active{% endif %}"
+      href="{% url 'profile' %}"
+    >
+
+      <span class="avatar">
+        {{ user.username|slice:":1"|upper }}
+      </span>
+
+      <span class="who">
+
+        <strong>{{ user.username }}</strong>
+
+        <small>
+          {% if user.is_superuser %}
+            Administrator
+          {% elif user.is_staff %}
+            Staff
+          {% else %}
+            View profile
+          {% endif %}
+        </small>
+
+      </span>
+
     </a>
-    <form method="post" action="{% url 'logout' %}" data-confirm="Log out?" data-confirm-text="You'll need to log in again to keep listening." data-confirm-ok="Log out" data-danger="1" data-icon="logout">{% csrf_token %}
-      <button class="logout-btn"><svg class="ic"><use href="#i-logout"/></svg>Log out</button>
+
+
+    <!-- LOGOUT -->
+
+    <form
+      method="post"
+      action="{% url 'logout' %}"
+      data-confirm="Log out?"
+      data-confirm-text="You'll need to log in again to keep listening."
+      data-confirm-ok="Log out"
+      data-danger="1"
+      data-icon="logout"
+    >
+
+      {% csrf_token %}
+
+      <button class="logout-btn">
+
+        <svg class="ic">
+          <use href="#i-logout"/>
+        </svg>
+
+        Log out
+
+      </button>
+
     </form>
+
   </div>
+
 </nav>

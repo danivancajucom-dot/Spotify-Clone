@@ -1,3 +1,4 @@
+# spotify_clone/spotify_clone/settings.py
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -72,6 +73,18 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
+# ---------- Authentication and session persistence ----------
+
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "artist_list"
+LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "home"
+
+# Keep the login session for 14 days.
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 14
+
+# Keep the session cookie after closing the browser.
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# Refresh the session expiry as the user continues using the app.
+SESSION_SAVE_EVERY_REQUEST = True

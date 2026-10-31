@@ -1,0 +1,36 @@
+{# spotify_clone/music/templates/components/artist_follow_card.html #}
+{# params: artist (annotated with follower_total), followed_ids #}
+<article class="card artist-discovery">
+  <a class="discovery-main" href="{{ artist.get_absolute_url }}">
+    <div class="art ph" data-seed="{{ artist.name }}">
+      {% if artist.image %}
+        <img src="{{ artist.image.url }}" alt="{{ artist.name }}">
+      {% else %}
+        <svg class="ic"><use href="#i-mic"/></svg>
+      {% endif %}
+    </div>
+
+    <strong>{{ artist.name }}</strong>
+
+    <span class="muted">
+      {{ artist.follower_total }} follower{{ artist.follower_total|pluralize }}
+    </span>
+  </a>
+
+  <form method="post" action="{% url 'toggle_artist_follow' artist.pk %}" class="inline-form">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+
+    {% if artist.pk in followed_ids %}
+      <button class="btn sm ghost" type="submit">
+        <svg class="ic fill"><use href="#i-heart"/></svg>
+        Liked
+      </button>
+    {% else %}
+      <button class="btn sm" type="submit">
+        <svg class="ic"><use href="#i-heart"/></svg>
+        Like artist
+      </button>
+    {% endif %}
+  </form>
+</article>

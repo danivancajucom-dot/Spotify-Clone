@@ -1,10 +1,26 @@
 {% extends "layouts/app.html" %}
-{% block title %}My playlists{% endblock %}
+
+{% block title %}Community playlists{% endblock %}
+
 {% block content %}
+
 {% url 'playlist_create' as create_url %}
-{% include "components/page_head.html" with title="My playlists" subtitle="Only you can see and edit these." action_url=create_url action_label="New playlist" %}
+
+{% include "components/page_head.html" with title="Community playlists" subtitle="Discover public playlists from everyone. Your private playlists are visible only to you." action_url=create_url action_label="New playlist" %}
+
+
 <div class="grid stagger">
-  {% for playlist in playlists %}{% include "components/playlist_card.html" %}
-  {% empty %}{% include "components/empty_state.html" with icon="list" message="No playlists yet. Create one to start collecting tracks." cta_url=create_url cta_label="Create a playlist" %}{% endfor %}
+
+  {% for playlist in playlists %}
+
+    {% include "components/playlist_card.html" %}
+
+  {% empty %}
+
+    {% include "components/empty_state.html" with icon="list" message="No public playlists yet. Create a playlist and make it public so others can listen." cta_url=create_url cta_label="Create a playlist" %}
+
+  {% endfor %}
+
 </div>
+
 {% endblock %}

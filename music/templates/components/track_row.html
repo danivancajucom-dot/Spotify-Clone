@@ -1,3 +1,5 @@
+{# spotify_clone/music/templates/components/track_row.html #}
+{# One song row. Every action lives in the three-dots menu (static/music/js/modules/row-menu.js). #}
 <tr class="track" style="--i: {{ forloop.counter0 }};">
   <td class="c-num">
     <button
@@ -8,6 +10,9 @@
         data-src="{{ track.audio_file.url }}"
         data-title="{{ track.title }}"
         data-artist="{{ track.album.artist.name }}"
+        data-artist-url="{{ track.album.artist.get_absolute_url }}"
+        data-album-url="{{ track.album.get_absolute_url }}"
+        data-album-title="{{ track.album.title }}"
         {% if track.album.cover %}
           data-cover="{{ track.album.cover.url }}"
         {% endif %}
@@ -23,7 +28,7 @@
           {{ forloop.counter }}
         {% endif %}
       </span>
-      <svg class="ic fill"><use href="#i-play"></use></svg>
+      <svg class="ic fill"><use href="#i-play"/></svg>
     </button>
   </td>
 
@@ -32,78 +37,173 @@
       <span class="eq"><i></i><i></i><i></i></span>
       {{ track.title }}
     </div>
+
     <div class="t-sub">
-      {% if show_album %}
-        <a href="{{ track.album.artist.get_absolute_url }}">{{ track.album.artist.name }}</a>
-      {% else %}
+      <a href="{{ track.album.artist.get_absolute_url }}">
         {{ track.album.artist.name }}
-      {% endif %}
+      </a>
     </div>
   </td>
 
   <td class="col-album t-sub">
     <div class="clip">
-      <a href="{{ track.album.get_absolute_url }}">{{ track.album.title }}</a>
+      <a href="{{ track.album.get_absolute_url }}">
+        {{ track.album.title }}
+      </a>
     </div>
   </td>
 
-  <td class="col-time t-sub">{{ track.duration_display }}</td>
+  <td class="col-time t-sub">
+    {{ track.duration_display }}
+  </td>
 
   <td class="col-actions">
     <div class="row-actions">
-      <form
-        method="post"
-        action="{% url 'toggle_like' track.pk %}"
-        data-confirm="{% if track.id in liked_ids %}Remove from Liked Songs?{% else %}Add to Favorites?{% endif %}"
-        data-confirm-text="{% if track.id in liked_ids %}“{{ track.title }}” will be removed from your Favorites.{% else %}Save “{{ track.title }}” to your Favorites? You can find it anytime in Liked Songs.{% endif %}"
-        data-confirm-ok="{% if track.id in liked_ids %}Remove favorite{% else %}Add to favorites{% endif %}"
-        data-toast="{% if track.id in liked_ids %}Removed from Favorites{% else %}Added to Favorites{% endif %}"
-        {% if track.id in liked_ids %}data-danger="1"{% endif %}
+
+      <!-- Three-dots button: opens the menu below -->
+      <button
+        type="button"
+        class="icon-btn row-menu-btn"
+        title="More options"
+        aria-label="More options for {{ track.title }}"
+        aria-haspopup="menu"
+        aria-expanded="false"
       >
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <svg class="ic"><use href="#i-dots"/></svg>
+      </button>
+
+      <div class="row-menu" role="menu" aria-label="Options for {{ track.title }}" hidden>
+
+        <!-- Add to queue -->
         <button
-          type="submit"
-          class="icon-btn heart {% if track.id in liked_ids %}on{% endif %}"
-          aria-label="Like or unlike"
+          type="button"
+          class="menu-item queue-add-btn"
+          role="menuitem"
+          {% if track.audio_file %}
+            data-src="{{ track.audio_file.url }}"
+            data-title="{{ track.title }}"
+            data-artist="{{ track.album.artist.name }}"
+            data-artist-url="{{ track.album.artist.get_absolute_url }}"
+            data-album-url="{{ track.album.get_absolute_url }}"
+            data-album-title="{{ track.album.title }}"
+            {% if track.album.cover %}
+              data-cover="{{ track.album.cover.url }}"
+            {% endif %}
+          {% else %}
+            disabled
+            title="No audio uploaded"
+          {% endif %}
         >
-          <svg class="ic"><use href="#i-heart"></use></svg>
+          <svg class="ic"><use href="#i-queue"/></svg>
+          Add to queue
         </button>
-      </form>
 
-      <a
-        class="icon-btn"
-        title="Add to playlist"
-        href="{% url 'add_to_playlist' track.pk %}?next={{ request.get_full_path|urlencode }}"
-      >
-        <svg class="ic"><use href="#i-plus"></use></svg>
-      </a>
-
-      {% if show_manage and track.created_by_id == user.id or show_manage and user.is_staff %}
-        <a class="icon-btn" title="Edit track" href="{% url 'track_update' track.pk %}">
-          <svg class="ic"><use href="#i-edit"></use></svg>
+        <!-- Add to playlist -->
+        <a
+          class="menu-item"
+          role="menuitem"
+          href="{% url 'add_to_playlist' track.pk %}?next={{ request.get_full_path|urlencode }}"
+        >
+          <svg class="ic"><use href="#i-plus"/></svg>
+          Add to playlist
         </a>
-        <a class="icon-btn danger" title="Delete track" href="{% url 'track_delete' track.pk %}">
-          <svg class="ic"><use href="#i-trash"></use></svg>
-        </a>
-      {% endif %}
 
-      {% if playlist %}
+        <!-- Favorite -->
         <form
           method="post"
-          action="{% url 'remove_from_playlist' playlist.pk track.pk %}"
-          data-confirm="Remove from playlist?"
-          data-confirm-text="“{{ track.title }}” will be removed from {{ playlist.name }}."
-          data-confirm-ok="Remove"
-          data-danger="1"
-          data-toast="Removed from playlist"
+          action="{% url 'toggle_like' track.pk %}"
+          data-confirm="{% if track.id in liked_ids %}Remove from Liked Songs?{% else %}Add to Favorites?{% endif %}"
+          data-confirm-text="{% if track.id in liked_ids %}Remove {{ track.title }} from your favorites?{% else %}Save {{ track.title }} to your Liked Songs?{% endif %}"
+          data-confirm-ok="{% if track.id in liked_ids %}Remove favorite{% else %}Add to favorites{% endif %}"
+          data-toast="{% if track.id in liked_ids %}Removed from Favorites{% else %}Added to Favorites{% endif %}"
+          {% if track.id in liked_ids %}data-danger="1"{% endif %}
         >
           {% csrf_token %}
-          <button class="icon-btn danger" title="Remove from playlist">
-            <svg class="ic"><use href="#i-x"></use></svg>
+
+          <input
+            type="hidden"
+            name="next"
+            value="{{ request.get_full_path }}"
+          >
+
+          <button
+            type="submit"
+            class="menu-item heart {% if track.id in liked_ids %}on{% endif %}"
+            role="menuitem"
+          >
+            <svg class="ic"><use href="#i-heart"/></svg>
+            {% if track.id in liked_ids %}Remove from favorites{% else %}Add to favorites{% endif %}
           </button>
         </form>
-      {% endif %}
+
+        <div class="menu-sep" role="separator"></div>
+
+        <!-- Go to Artist -->
+        <a
+          class="menu-item"
+          role="menuitem"
+          href="{{ track.album.artist.get_absolute_url }}"
+        >
+          <svg class="ic"><use href="#i-mic"/></svg>
+          Go to artist
+        </a>
+
+        <!-- Go to Album -->
+        <a
+          class="menu-item"
+          role="menuitem"
+          href="{{ track.album.get_absolute_url }}"
+        >
+          <svg class="ic"><use href="#i-disc"/></svg>
+          Go to album
+        </a>
+
+        <!-- Owner-only management -->
+        {% if show_manage and track.created_by_id == user.id or show_manage and user.is_staff %}
+          <div class="menu-sep" role="separator"></div>
+
+          <a
+            class="menu-item"
+            role="menuitem"
+            href="{% url 'track_update' track.pk %}"
+          >
+            <svg class="ic"><use href="#i-edit"/></svg>
+            Edit track
+          </a>
+
+          <a
+            class="menu-item danger"
+            role="menuitem"
+            href="{% url 'track_delete' track.pk %}"
+          >
+            <svg class="ic"><use href="#i-trash"/></svg>
+            Delete track
+          </a>
+        {% endif %}
+
+        <!-- Remove from playlist, if permitted -->
+        {% if playlist and can_manage_playlist %}
+          <div class="menu-sep" role="separator"></div>
+
+          <form
+            method="post"
+            action="{% url 'remove_from_playlist' playlist.pk track.pk %}"
+            data-confirm="Remove from playlist?"
+            data-confirm-text="Remove {{ track.title }} from {{ playlist.name }}?"
+            data-confirm-ok="Remove"
+            data-danger="1"
+            data-toast="Removed from playlist"
+          >
+            {% csrf_token %}
+
+            <button type="submit" class="menu-item danger" role="menuitem">
+              <svg class="ic"><use href="#i-x"/></svg>
+              Remove from playlist
+            </button>
+          </form>
+        {% endif %}
+
+      </div>
     </div>
   </td>
 </tr>
