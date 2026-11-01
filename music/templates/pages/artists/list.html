@@ -13,4 +13,6 @@
     {% include "components/empty_state.html" with icon="mic" message="No artists have been added yet." cta_url=create_url cta_label="Add the first artist" %}
   {% endfor %}
 </div>
+
+{% include "components/pagination.html" %}
 {% endblock %}

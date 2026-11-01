@@ -934,3 +934,86 @@ body.manager-open {
 .toasts {
   z-index: 240;
 }
+
+/* Pagination */
+.pagination{display:flex;align-items:center;justify-content:center;gap:10px;margin:30px auto 18px;color:var(--muted)}
+.page-btn{display:grid;place-items:center;min-width:38px;height:38px;padding:0 10px;border:1px solid var(--line2);border-radius:10px;background:var(--panel);color:var(--text);font-weight:700;text-decoration:none}
+.page-btn:hover:not(.disabled){border-color:#72bdff;color:#72bdff;background:rgba(85,170,255,.1)}
+.page-btn.disabled{opacity:.35;cursor:not-allowed}
+.page-status{font-size:.88rem;padding:0 8px}
+
+/* Date input: keep the native picker, but give it a consistent dark treatment. */
+input[type="date"]{width:100%;min-height:50px;padding:12px 14px;color:#eef6ff;color-scheme:dark;background:linear-gradient(145deg,#10243a,#0b1929);border:1px solid rgba(112,171,220,.24);border-radius:12px;font:inherit;letter-spacing:.01em}
+input[type="date"]:hover{border-color:rgba(114,189,255,.65)}
+input[type="date"]:focus{outline:none;border-color:#72bdff;box-shadow:0 0 0 3px rgba(85,170,255,.16)}
+input[type="date"]::-webkit-calendar-picker-indicator{padding:6px;border-radius:7px;cursor:pointer;filter:invert(.75) sepia(.25) saturate(1.8) hue-rotate(175deg)}
+input[type="date"]::-webkit-datetime-edit{padding:0 3px}
+
+/* Player repeat control */
+#p-repeat.active{color:#72bdff;background:rgba(85,170,255,.14)}
+.repeat-control{font-size:1.25rem;font-weight:800;line-height:1}
+
+/* Keep confirmation dialogs above the admin manager overlay. */
+.modal{z-index:190}
+.loading-overlay{z-index:220}
+
+/* Mobile hamburger navigation */
+.mobile-nav-toggle{display:none;width:42px;height:42px;flex:none;align-items:center;justify-content:center;flex-direction:column;gap:5px;border:1px solid var(--line2);border-radius:12px;background:var(--panel);cursor:pointer}
+.mobile-nav-toggle span{display:block;width:18px;height:2px;border-radius:2px;background:#eaf4ff;transition:transform .2s,opacity .2s}
+@media(max-width:900px){
+  .app{display:block;min-height:100vh}
+  .mobile-nav-toggle{display:flex}
+  .topbar{position:sticky;top:0;z-index:125;padding:10px 14px;gap:12px}
+  .topbar .greeting{display:none}
+  .searchbox{max-width:none;margin-left:0}
+  .side{position:fixed;top:0;bottom:0;left:0;z-index:150;width:min(290px,84vw);height:100dvh;display:flex;flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:18px;padding:22px 14px 18px;overflow-y:auto;background:linear-gradient(180deg,#081321,#07101c);border-right:1px solid rgba(114,189,255,.2);transform:translateX(-105%);transition:transform .25s ease}
+  .side .brand,.side .spacer,.side .nav-label{display:flex}
+  .side .spacer{display:block}
+  .nav-group{display:flex;flex-direction:column;gap:2px}
+  .nav-link{padding:11px 14px}
+  .side-foot{display:flex;flex-direction:column;margin-left:0;padding-top:14px;border-top:1px solid var(--line);gap:10px}
+  .side-user .who{display:flex}
+  .side-user{padding:10px 12px}
+  .logout-btn{width:100%;padding:11px 14px}
+  body.nav-open .side{transform:translateX(0)}
+  body.nav-open::before{content:"";position:fixed;inset:0;z-index:140;background:rgba(1,7,14,.68);backdrop-filter:blur(3px)}
+  body.nav-open .mobile-nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  body.nav-open .mobile-nav-toggle span:nth-child(2){opacity:0}
+  body.nav-open .mobile-nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  main{padding:10px 16px 150px;max-width:none}
+  .player{left:0;right:0;bottom:0;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:9px 12px;min-height:74px}
+  .player .np .cover{width:44px;height:44px}
+  .player .controls{grid-column:2;grid-row:1}
+  .player .ctrl-row{gap:8px}
+  .player .ctrl-row .big{width:38px;height:38px}
+  .player .seek,.player .vol{display:none}
+  .player .np{grid-column:1;grid-row:1;min-width:0}
+  .player .np-text strong{max-width:34vw}
+  .queue-panel{right:10px;bottom:88px}
+}
+@media(max-width:520px){
+  .player{grid-template-columns:minmax(0,1fr) auto}
+  .player .ctrl-row{gap:5px}
+  .player .ctrl-row .icon-btn{width:32px;height:32px}
+  .player .ctrl-row .big{width:36px;height:36px}
+  .repeat-control{font-size:1rem}
+  .player .np-text strong{max-width:30vw;font-size:.78rem}
+  .player .np-text>span{font-size:.72rem}
+  .page-head{align-items:flex-start}
+  .pagination{gap:6px}
+  .page-btn{min-width:34px;height:34px}
+}
+
+/* Flatpickr date picker polish */
+.flatpickr-calendar{background:#0d1d2e!important;border:1px solid rgba(114,189,255,.28)!important;border-radius:16px!important;box-shadow:0 20px 55px rgba(0,0,0,.48)!important;font-family:var(--body,inherit)!important;overflow:hidden}
+.flatpickr-calendar:before,.flatpickr-calendar:after{display:none!important}
+.flatpickr-months,.flatpickr-weekdays{background:#10263e!important}
+.flatpickr-current-month,.flatpickr-weekday{color:#eaf4ff!important}
+.flatpickr-day{color:#d8e8f8!important;border-radius:9px!important}
+.flatpickr-day:hover{background:rgba(114,189,255,.16)!important;border-color:transparent!important}
+.flatpickr-day.selected,.flatpickr-day.startRange,.flatpickr-day.endRange{background:#55aaff!important;border-color:#55aaff!important;color:#061426!important}
+.flatpickr-day.today{border-color:#72bdff!important}
+.flatpickr-day.disabled,.flatpickr-day.prevMonthDay,.flatpickr-day.nextMonthDay{color:#64778b!important}
+.flatpickr-time input,.flatpickr-current-month input.cur-year{color:#eaf4ff!important}
+.flatpickr-months .flatpickr-prev-month,.flatpickr-months .flatpickr-next-month{fill:#72bdff!important;color:#72bdff!important}
+input.flatpickr-input[readonly]{cursor:pointer}

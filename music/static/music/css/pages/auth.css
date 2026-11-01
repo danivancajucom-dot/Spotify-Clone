@@ -11,3 +11,7 @@
 .back-home:hover{color:#fff;background:var(--panel2)}
 .auth-title{font-size:1.9rem;margin-bottom:20px}
 .auth-card .btn.block,.auth-dialog .btn.block{margin-top:6px}
+
+.auth-forgot{text-align:right;margin:10px 0 0;font-size:.88rem}
+.auth-forgot a{color:#72bdff;font-weight:700}
+.auth-forgot a:hover{text-decoration:underline}

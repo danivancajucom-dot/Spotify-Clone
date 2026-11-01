@@ -1,4 +1,3 @@
-
 import { $, $$, icon, hueFrom } from "./utils.js";
 
 let audio = null;
@@ -7,6 +6,7 @@ let currentIndex = -1;
 let currentKey = "";
 let wired = false;
 let shuffleEnabled = false;
+let repeatMode = 0; // 0 = off, 1 = repeat queue, 2 = repeat current track
 
 const trackFromButton = (button) => ({
   src: button.dataset.src || "",
@@ -363,12 +363,37 @@ export function initPlayer() {
         const shuffle = $("#p-shuffle");
 
         shuffle?.classList.toggle("active", shuffleEnabled);
-        shuffle?.setAttribute(
-          "aria-pressed",
-          String(shuffleEnabled)
-        );
+        shuffle?.setAttribute("aria-pressed", String(shuffleEnabled));
 
         renderQueue();
+        return;
+      }
+
+      if (target.closest("#p-repeat")) {
+        repeatMode = (repeatMode + 1) % 3;
+
+        const repeat = $("#p-repeat");
+        const labels = [
+          "Repeat off",
+          "Repeat queue",
+          "Repeat one",
+        ];
+
+        if (repeat) {
+          repeat.classList.toggle("active", repeatMode !== 0);
+          repeat.dataset.mode = String(repeatMode);
+          repeat.setAttribute(
+            "aria-pressed",
+            String(repeatMode !== 0)
+          );
+          repeat.setAttribute(
+            "aria-label",
+            labels[repeatMode]
+          );
+          repeat.title = labels[repeatMode];
+          repeat.textContent = repeatMode === 2 ? "↻¹" : "↻";
+        }
+
         return;
       }
 
@@ -442,6 +467,8 @@ export function initPlayer() {
             playIndex(nextIndex);
           } else if (currentIndex < queue.length - 1) {
             playIndex(currentIndex + 1);
+          } else if (repeatMode === 1) {
+            playIndex(0);
           } else {
             audio.pause();
             audio.currentTime = 0;
@@ -458,6 +485,8 @@ export function initPlayer() {
         } else if (queue.length) {
           if (currentIndex > 0) {
             playIndex(currentIndex - 1);
+          } else if (repeatMode === 1) {
+            playIndex(queue.length - 1);
           } else {
             playIndex(0);
           }
@@ -517,7 +546,10 @@ export function initPlayer() {
     audio.addEventListener("pause", markPlaying);
 
     audio.addEventListener("ended", () => {
-      if (shuffleEnabled && queue.length > 1) {
+      if (repeatMode === 2 && currentIndex >= 0) {
+        audio.currentTime = 0;
+        playIndex(currentIndex);
+      } else if (shuffleEnabled && queue.length > 1) {
         let nextIndex = currentIndex;
 
         while (nextIndex === currentIndex) {
@@ -529,6 +561,8 @@ export function initPlayer() {
         playIndex(nextIndex);
       } else if (currentIndex < queue.length - 1) {
         playIndex(currentIndex + 1);
+      } else if (repeatMode === 1 && queue.length) {
+        playIndex(0);
       } else {
         markPlaying();
       }

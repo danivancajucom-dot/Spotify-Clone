@@ -15,6 +15,8 @@
     rel="stylesheet"
   >
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
   <link rel="stylesheet" href="{% static 'music/css/main.css' %}">
   {% block page_css %}{% endblock %}
 </head>
@@ -50,6 +52,8 @@
   </div>
 
   <!-- Preserve the player when navigating between internal pages -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+
   <script
     src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.12/dist/turbo.es2017-umd.js"
     defer

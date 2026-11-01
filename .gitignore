@@ -3,3 +3,4 @@ media/*
 !media/.gitkeep
 __pycache__/
 venv/
+.env

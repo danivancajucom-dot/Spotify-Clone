@@ -11,11 +11,8 @@ import { initAuthModal } from "./modules/auth-modal.js";
 import { initLoading } from "./modules/loading.js";
 import { initAdminManager } from "./modules/admin-manager.js";
 
-
 function initPage() {
-
   // Clear stale Turbo snapshots before a form submission.
-  // The redirected page will display the latest saved information.
   document.addEventListener(
     "turbo:submit-start",
     () => {
@@ -67,6 +64,75 @@ function initPage() {
   initPlayer();
 }
 
+function initDatePickers() {
+  if (typeof window.flatpickr !== "function") return;
+
+  document.querySelectorAll(
+    'input[type="date"]:not([data-flatpickr-init])'
+  ).forEach((input) => {
+    input.dataset.flatpickrInit = "1";
+
+    window.flatpickr(input, {
+      dateFormat: "Y-m-d",
+      altInput: true,
+      altFormat: "F j, Y",
+      allowInput: true,
+      disableMobile: true,
+      monthSelectorType: "static",
+    });
+  });
+}
+
+function initMobileNavigation() {
+  if (document.documentElement.dataset.mobileNavInit === "1") return;
+
+  document.documentElement.dataset.mobileNavInit = "1";
+
+  const close = () => {
+    document.body.classList.remove("nav-open");
+
+    const button = $("#mobile-nav-toggle");
+
+    button?.setAttribute("aria-expanded", "false");
+    button?.setAttribute("aria-label", "Open navigation");
+  };
+
+  document.addEventListener("click", (event) => {
+    const target =
+      event.target instanceof Element ? event.target : null;
+
+    if (!target) return;
+
+    if (target.closest("#mobile-nav-toggle")) {
+      const open = !document.body.classList.contains("nav-open");
+
+      document.body.classList.toggle("nav-open", open);
+
+      const button = $("#mobile-nav-toggle");
+
+      button?.setAttribute("aria-expanded", String(open));
+      button?.setAttribute(
+        "aria-label",
+        open ? "Close navigation" : "Open navigation"
+      );
+
+      return;
+    }
+
+    if (target.closest("#app-sidebar a")) close();
+
+    if (
+      document.body.classList.contains("nav-open") &&
+      !target.closest("#app-sidebar")
+    ) {
+      close();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") close();
+  });
+}
 
 // Initialize once on initial page load.
 initToasts();
@@ -77,14 +143,16 @@ initForms();
 initLoading();
 initAdminManager();
 initDropzones();
+initMobileNavigation();
+initDatePickers();
 
 initPage();
-
 
 // Reinitialize page-dependent features after Turbo navigation.
 document.addEventListener("turbo:load", () => {
   initToasts();
   initForms();
   initDropzones();
+  initDatePickers();
   initPage();
 });

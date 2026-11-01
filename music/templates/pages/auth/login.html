@@ -2,10 +2,14 @@
 {% block title %}Log in{% endblock %}
 {% block auth %}
 <h1 class="auth-title">Welcome back</h1>
-<form method="post" novalidate>{% csrf_token %}
+<form method="post" novalidate>
+  {% csrf_token %}
   {% include "components/auth_fields.html" %}
   <input type="hidden" name="next" value="{{ next }}">
   <button class="btn block">Log in</button>
 </form>
+<p class="auth-forgot">
+  <a href="{% url 'password_reset' %}">Forgot your password?</a>
+</p>
 <p class="alt">New here? <a href="{% url 'register' %}">Create an account</a></p>
 {% endblock %}

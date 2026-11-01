@@ -304,8 +304,28 @@
     </table>
   </div>
 
-  <p class="admin-manager-footnote">
-    Showing up to 100 records. Use search to narrow the list.
-  </p>
+  {% if items.paginator.num_pages > 1 %}
+    <nav class="pagination admin-manager-pagination" aria-label="Manager pagination">
+      {% if items.has_previous %}
+        <button class="page-btn" type="button" data-admin-url="{% url 'admin_manage_list' manager_kind %}?q={{ query|urlencode }}&page={{ items.previous_page_number }}">‹</button>
+      {% else %}
+        <span class="page-btn disabled">‹</span>
+      {% endif %}
+
+      <span class="page-status">
+        Page <strong>{{ items.number }}</strong> of {{ items.paginator.num_pages }} · {{ items.paginator.count }} records
+      </span>
+
+      {% if items.has_next %}
+        <button class="page-btn" type="button" data-admin-url="{% url 'admin_manage_list' manager_kind %}?q={{ query|urlencode }}&page={{ items.next_page_number }}">›</button>
+      {% else %}
+        <span class="page-btn disabled">›</span>
+      {% endif %}
+    </nav>
+  {% else %}
+    <p class="admin-manager-footnote">
+      {{ items.paginator.count }} record{{ items.paginator.count|pluralize }} found.
+    </p>
+  {% endif %}
 
 {% endif %}

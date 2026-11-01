@@ -44,13 +44,6 @@
       Delete album
     </a>
   {% endif %}
-
-  {% if user.is_staff %}
-    <a class="btn ghost" href="{% url 'admin:music_album_change' album.pk %}">
-      <svg class="ic"><use href="#i-shield"></use></svg>
-      Open in admin
-    </a>
-  {% endif %}
 </div>
 
 {% if tracks %}

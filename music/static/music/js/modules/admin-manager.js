@@ -27,7 +27,6 @@ function setOpen(open) {
   document.body.classList.toggle("manager-open", open);
 }
 
-
 async function load(url, options = {}) {
   const panel = content();
 
@@ -104,7 +103,6 @@ async function load(url, options = {}) {
   }
 }
 
-
 export function initAdminManager() {
   if (initialized) return;
 
@@ -152,12 +150,10 @@ export function initAdminManager() {
     }
   });
 
-
   document.addEventListener("submit", async (event) => {
     const form = event.target;
 
     if (!(form instanceof HTMLFormElement)) return;
-
 
     if (form.matches("[data-admin-search]")) {
       event.preventDefault();
@@ -166,13 +162,14 @@ export function initAdminManager() {
         new FormData(form)
       );
 
+      params.delete("page");
+
       await load(
         `/admin-panel/manage/${activeKind}/?${params.toString()}`
       );
 
       return;
     }
-
 
     if (form.matches("[data-admin-form]")) {
       event.preventDefault();
@@ -199,7 +196,6 @@ export function initAdminManager() {
 
       return;
     }
-
 
     if (form.matches("[data-admin-delete]")) {
       event.preventDefault();
@@ -237,7 +233,6 @@ export function initAdminManager() {
       hideLoading();
     }
   });
-
 
   document.addEventListener("keydown", (event) => {
     if (

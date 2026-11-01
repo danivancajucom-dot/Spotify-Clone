@@ -3,6 +3,7 @@ from django.contrib.auth import login, get_user_model
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -312,14 +313,14 @@ def dashboard(request):
         "pages/dashboard.html",
         {
             "profile_obj": profile_obj,
-            "albums": Album.objects.select_related("artist"),
+            "albums": Album.objects.select_related("artist").order_by("-release_date")[:4],
             "playlists": (
                 Playlist.objects.filter(is_public=True)
                 .select_related("owner")
-                .order_by("-created_at")[:8]
+                .order_by("-created_at")[:4]
             ),
-            "recommended_artists": recommended_artists,
-            "followed_artists": followed_artists,
+            "recommended_artists": recommended_artists[:4],
+            "followed_artists": followed_artists[:4],
             "followed_ids": followed_ids,
             "playlist_count": user.playlists.count(),
             "liked_count": user.liked_tracks.count(),
@@ -345,7 +346,7 @@ def admin_dashboard(request):
             "playlist_total": Playlist.objects.count(),
             "recent_tracks": (
                 Track.objects.select_related("album__artist")
-                .order_by("-pk")[:8]
+                .order_by("-pk")[:4]
             ),
             "liked_ids": liked_ids(request.user),
         },
@@ -354,11 +355,19 @@ def admin_dashboard(request):
 
 @login_required
 def artist_list(request):
-    """Artists page: every artist that has been added."""
+    """Paginated artists library."""
+    page_obj = Paginator(
+        Artist.objects.all(),
+        12,
+    ).get_page(request.GET.get("page"))
+
     return render(
         request,
         "pages/artists/list.html",
-        {"artists": Artist.objects.all()},
+        {
+            "artists": page_obj,
+            "page_obj": page_obj,
+        },
     )
 
 
@@ -511,11 +520,17 @@ def toggle_artist_follow(request, pk):
 
 @login_required
 def album_list(request):
+    page_obj = Paginator(
+        Album.objects.select_related("artist"),
+        12,
+    ).get_page(request.GET.get("page"))
+
     return render(
         request,
         "pages/albums/list.html",
         {
-            "albums": Album.objects.select_related("artist"),
+            "albums": page_obj,
+            "page_obj": page_obj,
         },
     )
 
@@ -719,11 +734,17 @@ def playlist_list(request):
         .order_by("-created_at")
     )
 
+    page_obj = Paginator(
+        playlists,
+        12,
+    ).get_page(request.GET.get("page"))
+
     return render(
         request,
         "pages/playlists/list.html",
         {
-            "playlists": playlists,
+            "playlists": page_obj,
+            "page_obj": page_obj,
             "is_my_playlists": True,
         },
     )
@@ -737,11 +758,17 @@ def community_playlist_list(request):
         .order_by("-created_at")
     )
 
+    page_obj = Paginator(
+        playlists,
+        12,
+    ).get_page(request.GET.get("page"))
+
     return render(
         request,
         "pages/playlists/list.html",
         {
-            "playlists": playlists,
+            "playlists": page_obj,
+            "page_obj": page_obj,
             "is_my_playlists": False,
         },
     )
@@ -927,7 +954,15 @@ def liked_songs(request):
         .select_related("track__album__artist")
     )
 
-    tracks = [like.track for like in likes]
+    page_obj = Paginator(
+        likes,
+        15,
+    ).get_page(request.GET.get("page"))
+
+    tracks = [
+        like.track
+        for like in page_obj.object_list
+    ]
 
     return render(
         request,
@@ -935,8 +970,10 @@ def liked_songs(request):
         {
             "tracks": tracks,
             "liked_ids": {
-                track.id for track in tracks
+                track.id
+                for track in tracks
             },
+            "page_obj": page_obj,
         },
     )
 
@@ -1022,7 +1059,7 @@ def _admin_manager_items(kind, query=""):
                 | Q(last_name__icontains=query)
             )
 
-        return items[:100]
+        return items
 
     if kind == "artists":
         items = Artist.objects.all()
@@ -1033,7 +1070,7 @@ def _admin_manager_items(kind, query=""):
                 | Q(bio__icontains=query)
             )
 
-        return items[:100]
+        return items
 
     if kind == "albums":
         items = Album.objects.select_related("artist")
@@ -1044,7 +1081,7 @@ def _admin_manager_items(kind, query=""):
                 | Q(artist__name__icontains=query)
             )
 
-        return items[:100]
+        return items
 
     if kind == "tracks":
         items = Track.objects.select_related(
@@ -1058,7 +1095,7 @@ def _admin_manager_items(kind, query=""):
                 | Q(album__artist__name__icontains=query)
             )
 
-        return items[:100]
+        return items
 
     if kind == "playlists":
         items = (
@@ -1072,7 +1109,7 @@ def _admin_manager_items(kind, query=""):
                 | Q(owner__username__icontains=query)
             )
 
-        return items[:100]
+        return items
 
     items = LikedTrack.objects.select_related(
         "user",
@@ -1085,7 +1122,7 @@ def _admin_manager_items(kind, query=""):
             | Q(track__title__icontains=query)
         )
 
-    return items[:100]
+    return items
 
 
 def _render_admin_manager(
@@ -1105,7 +1142,10 @@ def _render_admin_manager(
         {
             "manager_kind": kind,
             "manager_title": config["title"],
-            "items": _admin_manager_items(kind, query),
+            "items": Paginator(
+                _admin_manager_items(kind, query),
+                10,
+            ).get_page(request.GET.get("page")),
             "form": form,
             "editing": editing,
             "query": query,
