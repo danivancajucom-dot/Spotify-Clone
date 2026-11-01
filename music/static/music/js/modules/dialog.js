@@ -1,32 +1,42 @@
 import { $, icon } from "./utils.js";
+import { showLoading } from "./loading.js";
 
 let resolver = null;
 let initialized = false;
 
+
 function getModal() {
   return $("#modal");
 }
+
 
 export function confirmDialog(options = {}) {
   const modal = getModal();
 
   // Allow the form to work even if the confirmation modal is unavailable.
   if (
-    !modal ||
-    !$("#m-title") ||
-    !$("#m-text") ||
-    !$("#m-ok") ||
-    !$("#m-cancel") ||
-    !$("#m-icon")
+    !modal
+    || !$("#m-title")
+    || !$("#m-text")
+    || !$("#m-ok")
+    || !$("#m-cancel")
+    || !$("#m-icon")
   ) {
     return Promise.resolve(
-      window.confirm(options.text || options.title || "Continue?")
+      window.confirm(
+        options.text || options.title || "Continue?"
+      )
     );
   }
 
-  $("#m-title").textContent = options.title || "Are you sure?";
-  $("#m-text").textContent = options.text || "";
-  $("#m-ok").textContent = options.ok || "Confirm";
+  $("#m-title").textContent =
+    options.title || "Are you sure?";
+
+  $("#m-text").textContent =
+    options.text || "";
+
+  $("#m-ok").textContent =
+    options.ok || "Confirm";
 
   $("#m-ok").className =
     "btn " + (options.danger ? "danger" : "");
@@ -34,7 +44,10 @@ export function confirmDialog(options = {}) {
   const dialog = $(".dialog", modal);
 
   if (dialog) {
-    dialog.classList.toggle("danger", Boolean(options.danger));
+    dialog.classList.toggle(
+      "danger",
+      Boolean(options.danger)
+    );
   }
 
   $("#m-icon").classList.toggle(
@@ -43,7 +56,8 @@ export function confirmDialog(options = {}) {
   );
 
   $("#m-icon").innerHTML = icon(
-    options.icon || (options.danger ? "trash" : "heart")
+    options.icon
+    || (options.danger ? "trash" : "heart")
   );
 
   modal.classList.add("open");
@@ -55,9 +69,11 @@ export function confirmDialog(options = {}) {
     }
 
     resolver = resolve;
+
     $("#m-ok").focus();
   });
 }
+
 
 function closeModal(confirmed) {
   const modal = getModal();
@@ -74,8 +90,10 @@ function closeModal(confirmed) {
   }
 }
 
+
 export function initDialog() {
   if (initialized) return;
+
   initialized = true;
 
   // Event delegation is important because Turbo can replace modal elements.
@@ -103,17 +121,28 @@ export function initDialog() {
     }
   });
 
+
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && getModal()?.classList.contains("open")) {
+    if (
+      event.key === "Escape"
+      && getModal()?.classList.contains("open")
+    ) {
       closeModal(false);
     }
   });
+
 
   document.addEventListener("submit", async (event) => {
     const form = event.target;
 
     if (!(form instanceof HTMLFormElement)) return;
-    if (!form.dataset.confirm || form.dataset.done === "1") return;
+
+    if (
+      !form.dataset.confirm
+      || form.dataset.done === "1"
+    ) {
+      return;
+    }
 
     event.preventDefault();
 
@@ -130,9 +159,18 @@ export function initDialog() {
     // Prevent this form from opening the same confirmation twice.
     form.dataset.done = "1";
 
+    showLoading(
+      form,
+      "Processing request",
+      "Please wait while we complete this action…"
+    );
+
     if (form.dataset.toast) {
       try {
-        sessionStorage.setItem("toast", form.dataset.toast);
+        sessionStorage.setItem(
+          "toast",
+          form.dataset.toast
+        );
       } catch {
         // Submission should still work if sessionStorage is unavailable.
       }

@@ -1,28 +1,18 @@
 {# spotify_clone/music/templates/components/sidebar.html #}
 
 <nav class="side" aria-label="Main">
-
-  <!-- BRAND -->
-
   <a class="brand" href="{% url 'dashboard' %}">
-
     <span class="brand-mark">
       <svg class="ic">
         <use href="#i-note"/>
       </svg>
     </span>
-
     Spotify Clone
-
   </a>
-
 
   {% with page=request.resolver_match.url_name %}
 
-  <!-- HOME -->
-
   <div class="nav-group">
-
     <span class="nav-label">Home</span>
 
     <a
@@ -34,14 +24,9 @@
       </svg>
       Dashboard
     </a>
-
   </div>
 
-
-  <!-- LIBRARY -->
-
   <div class="nav-group">
-
     <span class="nav-label">Library</span>
 
     <a
@@ -64,15 +49,6 @@
       Albums
     </a>
 
-  </div>
-
-
-  <!-- PERSONAL LIBRARY -->
-
-  <div class="nav-group">
-
-    <span class="nav-label">Yours</span>
-
     <a
       class="nav-link {% if page == 'playlist_list' or page == 'playlist_detail' or page == 'playlist_create' or page == 'playlist_update' %}active{% endif %}"
       href="{% url 'playlist_list' %}"
@@ -80,8 +56,12 @@
       <svg class="ic">
         <use href="#i-list"/>
       </svg>
-      My playlists
+      Playlists
     </a>
+  </div>
+
+  <div class="nav-group">
+    <span class="nav-label">Yours</span>
 
     <a
       class="nav-link {% if page == 'liked_songs' %}active{% endif %}"
@@ -92,18 +72,12 @@
       </svg>
       Liked songs
     </a>
-
   </div>
 
   {% endwith %}
 
-
-  <!-- ADMIN PANEL -->
-
   {% if user.is_staff %}
-
   <div class="nav-group">
-
     <span class="nav-label">Admin</span>
 
     <a
@@ -115,32 +89,22 @@
       </svg>
       Admin panel
     </a>
-
   </div>
-
   {% endif %}
-
 
   <div class="spacer"></div>
 
-
-  <!-- USER ACCOUNT -->
-
   <div class="side-foot">
-
     <a
       class="side-user {% if request.resolver_match.url_name == 'profile' %}active{% endif %}"
       href="{% url 'profile' %}"
     >
-
       <span class="avatar">
         {{ user.username|slice:":1"|upper }}
       </span>
 
       <span class="who">
-
         <strong>{{ user.username }}</strong>
-
         <small>
           {% if user.is_superuser %}
             Administrator
@@ -150,13 +114,8 @@
             View profile
           {% endif %}
         </small>
-
       </span>
-
     </a>
-
-
-    <!-- LOGOUT -->
 
     <form
       method="post"
@@ -167,21 +126,14 @@
       data-danger="1"
       data-icon="logout"
     >
-
       {% csrf_token %}
 
       <button class="logout-btn">
-
         <svg class="ic">
           <use href="#i-logout"/>
         </svg>
-
         Log out
-
       </button>
-
     </form>
-
   </div>
-
 </nav>

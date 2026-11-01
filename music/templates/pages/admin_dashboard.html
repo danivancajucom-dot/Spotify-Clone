@@ -1,249 +1,202 @@
 {% extends "layouts/app.html" %}
+{% load static %}
 
 {% block title %}Admin panel{% endblock %}
 
 {% block content %}
 
 <div class="page-head admin-heading">
-
   <div>
-
-    <span class="kicker">
-      Workspace management
-    </span>
-
+    <span class="kicker">Workspace management</span>
     <h1>Admin panel</h1>
-
     <p class="muted">
-      Manage users and your music library from one place.
+      Manage accounts and the music library without leaving your workspace.
     </p>
-
   </div>
 
-  <span class="admin-role">
-    Administrator
-  </span>
-
+  <span class="admin-role">Administrator</span>
 </div>
 
-
-<!-- STATISTICS -->
-
 <section class="admin-stats">
-
-  <article class="admin-stat">
+  <article class="admin-stat" data-stat="users">
     <span>Users</span>
     <strong>{{ user_total }}</strong>
   </article>
 
-  <article class="admin-stat">
+  <article class="admin-stat" data-stat="artists">
     <span>Artists</span>
     <strong>{{ artist_total }}</strong>
   </article>
 
-  <article class="admin-stat">
+  <article class="admin-stat" data-stat="albums">
     <span>Albums</span>
     <strong>{{ album_total }}</strong>
   </article>
 
-  <article class="admin-stat">
+  <article class="admin-stat" data-stat="tracks">
     <span>Tracks</span>
     <strong>{{ track_total }}</strong>
   </article>
 
-  <article class="admin-stat">
+  <article class="admin-stat" data-stat="playlists">
     <span>Playlists</span>
     <strong>{{ playlist_total }}</strong>
   </article>
-
 </section>
-
-
-<!-- MANAGEMENT -->
 
 <section class="discover-section">
-
   <div class="section-head">
-
     <div>
-
-      <h2>Manage content</h2>
-
+      <h2>Manage your platform</h2>
       <p class="muted">
-        Open a management area to add, review, edit, or remove records.
+        Open a workspace to search, add, edit, or remove records.
       </p>
-
     </div>
-
   </div>
-
 
   <div class="admin-grid">
-
-    <a
+    <button
+      type="button"
       class="admin-card"
-      href="{% url 'admin:auth_user_changelist' %}"
+      data-admin-manager="users"
     >
-
       <span class="admin-icon">♙</span>
-
       <strong>User accounts</strong>
+      <small>Manage accounts, access, and status</small>
+      <b>Open manager →</b>
+    </button>
 
-      <small>
-        Manage accounts, staff access, and permissions
-      </small>
-
-      <b>Manage users →</b>
-
-    </a>
-
-
-    <a
+    <button
+      type="button"
       class="admin-card"
-      href="{% url 'admin:music_artist_changelist' %}"
+      data-admin-manager="artists"
     >
-
       <span class="admin-icon">♫</span>
-
       <strong>Artists</strong>
+      <small>Manage artist profiles and images</small>
+      <b>Open manager →</b>
+    </button>
 
-      <small>
-        Add and update artist profiles
-      </small>
-
-      <b>Manage artists →</b>
-
-    </a>
-
-
-    <a
+    <button
+      type="button"
       class="admin-card"
-      href="{% url 'admin:music_album_changelist' %}"
+      data-admin-manager="albums"
     >
-
       <span class="admin-icon">▣</span>
-
       <strong>Albums</strong>
+      <small>Manage album details, covers, and release dates</small>
+      <b>Open manager →</b>
+    </button>
 
-      <small>
-        Manage album details, covers, and release dates
-      </small>
-
-      <b>Manage albums →</b>
-
-    </a>
-
-
-    <a
+    <button
+      type="button"
       class="admin-card"
-      href="{% url 'admin:music_track_changelist' %}"
+      data-admin-manager="tracks"
     >
-
       <span class="admin-icon">♪</span>
-
       <strong>Tracks</strong>
+      <small>Manage audio files and track information</small>
+      <b>Open manager →</b>
+    </button>
 
-      <small>
-        Manage audio files and track information
-      </small>
-
-      <b>Manage tracks →</b>
-
-    </a>
-
-
-    <a
+    <button
+      type="button"
       class="admin-card"
-      href="{% url 'admin:music_playlist_changelist' %}"
+      data-admin-manager="playlists"
     >
-
       <span class="admin-icon">☷</span>
-
       <strong>Playlists</strong>
+      <small>Review public and private playlists</small>
+      <b>Open manager →</b>
+    </button>
 
-      <small>
-        Review playlists and their track collections
-      </small>
-
-      <b>Manage playlists →</b>
-
-    </a>
-
-
-    <a
+    <button
+      type="button"
       class="admin-card"
-      href="{% url 'admin:music_likedtrack_changelist' %}"
+      data-admin-manager="likes"
     >
-
       <span class="admin-icon">♡</span>
-
       <strong>Liked songs</strong>
-
-      <small>
-        Review user liked-track records
-      </small>
-
-      <b>View activity →</b>
-
-    </a>
-
+      <small>Review user liked-track activity</small>
+      <b>Open manager →</b>
+    </button>
   </div>
-
 </section>
 
-
-<!-- ADMIN MUSIC PLAYER / RECENT TRACKS -->
-
 <section class="discover-section admin-recent-tracks">
-
   <div class="section-head">
-
     <div>
-
       <h2>Recently uploaded tracks</h2>
-
       <p class="muted">
         Play music directly from the admin workspace.
       </p>
-
     </div>
 
-    <a
+    <button
       class="text-link"
-      href="{% url 'admin:music_track_changelist' %}"
+      type="button"
+      data-admin-manager="tracks"
     >
       Manage all tracks
-    </a>
-
+    </button>
   </div>
 
-
   {% if recent_tracks %}
-
     <button
       class="btn ghost"
       type="button"
       data-play-all
     >
-
       <svg class="ic fill">
         <use href="#i-play"/>
       </svg>
-
       Play all recent tracks
-
     </button>
 
     {% include "components/track_table.html" with tracks=recent_tracks show_album=True %}
-
   {% else %}
-
     <p class="muted">
       No tracks have been uploaded yet.
     </p>
-
   {% endif %}
-
 </section>
+
+<div
+  class="admin-manager-overlay"
+  id="admin-manager"
+  aria-hidden="true"
+>
+  <section
+    class="admin-manager-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="admin-manager-title"
+  >
+    <header class="admin-manager-header">
+      <div>
+        <span class="kicker">Admin workspace</span>
+        <h2 id="admin-manager-title">Management</h2>
+      </div>
+
+      <button
+        type="button"
+        class="admin-manager-close"
+        aria-label="Close manager"
+        data-admin-close
+      >
+        ×
+      </button>
+    </header>
+
+    <div
+      class="admin-manager-content"
+      id="admin-manager-content"
+    >
+      <div class="admin-manager-loading">
+        Choose a management section to begin.
+      </div>
+    </div>
+  </section>
+</div>
 
 {% endblock %}

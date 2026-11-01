@@ -25,6 +25,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "music.middleware.TurboFormErrorsMiddleware", 
 ]
 
 ROOT_URLCONF = "spotify_clone.urls"

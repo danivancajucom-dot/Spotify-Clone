@@ -1,26 +1,71 @@
 {% extends "layouts/app.html" %}
 
-{% block title %}Community playlists{% endblock %}
+{% block title %}
+  {% if is_my_playlists %}
+    My playlists
+  {% else %}
+    Community playlists
+  {% endif %}
+{% endblock %}
 
 {% block content %}
 
 {% url 'playlist_create' as create_url %}
 
-{% include "components/page_head.html" with title="Community playlists" subtitle="Discover public playlists from everyone. Your private playlists are visible only to you." action_url=create_url action_label="New playlist" %}
+{% if is_my_playlists %}
 
+  {% include "components/page_head.html" with title="My playlists" subtitle="Playlists you created and manage." action_url=create_url action_label="New playlist" %}
+
+  <div class="section-head">
+    <p class="muted">
+      Want to discover what others are listening to?
+    </p>
+
+    <a
+      class="text-link"
+      href="{% url 'community_playlist_list' %}"
+    >
+      Explore community playlists →
+    </a>
+  </div>
+
+{% else %}
+
+  {% include "components/page_head.html" with title="Community playlists" subtitle="Discover public playlists created by everyone." action_url=create_url action_label="New playlist" %}
+
+  <div class="section-head">
+    <p class="muted">
+      Your own playlists are in My playlists.
+    </p>
+
+    <a
+      class="text-link"
+      href="{% url 'playlist_list' %}"
+    >
+      Go to My playlists →
+    </a>
+  </div>
+
+{% endif %}
 
 <div class="grid stagger">
-
   {% for playlist in playlists %}
 
     {% include "components/playlist_card.html" %}
 
   {% empty %}
 
-    {% include "components/empty_state.html" with icon="list" message="No public playlists yet. Create a playlist and make it public so others can listen." cta_url=create_url cta_label="Create a playlist" %}
+    {% if is_my_playlists %}
+
+      {% include "components/empty_state.html" with icon="list" message="You haven't created a playlist yet. Start building your own collection." cta_url=create_url cta_label="Create a playlist" %}
+
+    {% else %}
+
+      {% include "components/empty_state.html" with icon="list" message="No public playlists yet. Create a playlist and make it public so others can listen." cta_url=create_url cta_label="Create a playlist" %}
+
+    {% endif %}
 
   {% endfor %}
-
 </div>
 
 {% endblock %}

@@ -8,6 +8,8 @@ import { initDropzones } from "./modules/dropzone.js";
 import { initPlayer } from "./modules/player.js";
 import { initRowMenus } from "./modules/row-menu.js";
 import { initAuthModal } from "./modules/auth-modal.js";
+import { initLoading } from "./modules/loading.js";
+import { initAdminManager } from "./modules/admin-manager.js";
 
 
 function initPage() {
@@ -72,6 +74,8 @@ initDialog();
 initRowMenus();
 initAuthModal();
 initForms();
+initLoading();
+initAdminManager();
 initDropzones();
 
 initPage();
@@ -79,5 +83,8 @@ initPage();
 
 // Reinitialize page-dependent features after Turbo navigation.
 document.addEventListener("turbo:load", () => {
+  initToasts();
+  initForms();
+  initDropzones();
   initPage();
 });

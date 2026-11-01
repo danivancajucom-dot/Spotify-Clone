@@ -35,13 +35,30 @@
 
   {% include "components/confirm_dialog.html" %}
 
+  <div
+    class="loading-overlay"
+    id="loading-overlay"
+    aria-hidden="true"
+  >
+    <div class="loading-card">
+      <span class="loading-spinner"></span>
+      <strong id="loading-title">Please wait</strong>
+      <span id="loading-message">
+        Your changes are being processed…
+      </span>
+    </div>
+  </div>
+
   <!-- Preserve the player when navigating between internal pages -->
   <script
     src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.12/dist/turbo.es2017-umd.js"
     defer
   ></script>
 
-  <script type="module" src="{% static 'music/js/main.js' %}"></script>
+  <script
+    type="module"
+    src="{% static 'music/js/main.js' %}"
+  ></script>
 
 </body>
 </html>

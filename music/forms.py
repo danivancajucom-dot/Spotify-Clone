@@ -228,3 +228,97 @@ class ProfileForm(forms.ModelForm):
             profile.save()
 
         return profile
+
+
+class AdminUserForm(forms.ModelForm):
+    password = forms.CharField(
+        required=False,
+        label="Password",
+        widget=forms.PasswordInput(
+            attrs={"autocomplete": "new-password"}
+        ),
+        help_text=(
+            "Leave blank when editing to keep the current password."
+        ),
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            "first_name",
+            "last_name",
+            "username",
+            "email",
+            "is_active",
+            "is_staff",
+            "is_superuser",
+            "password",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if not self.instance.pk:
+            self.fields["password"].required = True
+            self.fields["password"].help_text = (
+                "Set an initial password for this account."
+            )
+
+    def save(self, commit=True):
+        existing_password = (
+            self.instance.password if self.instance.pk else None
+        )
+
+        user = super().save(commit=False)
+        password = self.cleaned_data.get("password")
+
+        if password:
+            user.set_password(password)
+        elif existing_password:
+            user.password = existing_password
+
+        if commit:
+            user.save()
+
+        return user
+
+
+class AdminTrackForm(TrackForm):
+    album = forms.ModelChoiceField(
+        queryset=Album.objects.select_related("artist")
+    )
+
+    class Meta(TrackForm.Meta):
+        fields = [
+            "album",
+            "title",
+            "track_number",
+            "duration_seconds",
+            "audio_file",
+        ]
+
+
+class AdminPlaylistForm(PlaylistForm):
+    owner = forms.ModelChoiceField(
+        queryset=User.objects.order_by("username")
+    )
+
+    tracks = forms.ModelMultipleChoiceField(
+        queryset=Track.objects.select_related("album__artist"),
+        required=False,
+        widget=forms.SelectMultiple(attrs={"size": 8}),
+        help_text=(
+            "Hold Ctrl (Windows) or Command (Mac) "
+            "to select multiple tracks."
+        ),
+    )
+
+    class Meta(PlaylistForm.Meta):
+        fields = [
+            "owner",
+            "name",
+            "description",
+            "cover",
+            "is_public",
+            "tracks",
+        ]

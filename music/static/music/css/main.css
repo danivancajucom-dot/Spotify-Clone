@@ -504,6 +504,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
 }
 
+
 /* =========================================
    UPDATED BLUE MUSIC PLAYER
    ========================================= */
@@ -551,4 +552,385 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   min-height: 18px;
   accent-color: var(--green);
   vertical-align: middle;
+}
+
+
+/* =========================================
+   FORM FEEDBACK + GLOBAL LOADING STATE
+   ========================================= */
+
+.field.has-error > label {
+  color: #ff8796;
+}
+
+.field.has-error input,
+.field.has-error textarea,
+.field.has-error select {
+  border-color: #ff5468 !important;
+  box-shadow: 0 0 0 3px rgba(255, 84, 104, .16) !important;
+}
+
+.field-error {
+  display: flex !important;
+}
+
+.form-card button:disabled,
+.admin-manager-form button:disabled {
+  opacity: .65;
+  cursor: wait;
+}
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(3, 10, 19, .72);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .2s, visibility .2s;
+}
+
+.loading-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.loading-card {
+  width: min(340px, 100%);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  border: 1px solid rgba(104, 177, 239, .25);
+  border-radius: 20px;
+  background: linear-gradient(145deg, #122b45, #091a2c);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .48);
+}
+
+.loading-card strong {
+  font: 700 1.05rem var(--display);
+}
+
+.loading-card > span:last-child {
+  color: var(--muted);
+  font-size: .88rem;
+}
+
+.loading-spinner {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 3px solid rgba(112, 189, 255, .2);
+  border-top-color: #72bdff;
+  animation: managerSpin .8s linear infinite;
+}
+
+@keyframes managerSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================
+   ADMIN INLINE MANAGEMENT OVERLAY
+   ========================================= */
+
+.admin-card {
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.admin-manager-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 160;
+  display: grid;
+  place-items: center;
+  padding: clamp(10px, 3vw, 30px);
+  background: rgba(2, 8, 16, .78);
+  backdrop-filter: blur(9px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .2s, visibility .2s;
+}
+
+.admin-manager-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.admin-manager-dialog {
+  width: min(1040px, 100%);
+  max-height: min(88vh, 900px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(105, 178, 240, .24);
+  border-radius: 22px;
+  background: linear-gradient(145deg, #10263e, #081827);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, .6);
+  transform: translateY(16px) scale(.985);
+  transition: transform .25s;
+}
+
+.admin-manager-overlay.open .admin-manager-dialog {
+  transform: none;
+}
+
+.admin-manager-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(112, 171, 220, .16);
+}
+
+.admin-manager-header .kicker {
+  color: #72bdff;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.admin-manager-header h2 {
+  margin: 3px 0 0;
+  font-size: 1.3rem;
+}
+
+.admin-manager-close {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--text);
+  background: rgba(255, 255, 255, .04);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.admin-manager-close:hover {
+  background: rgba(255, 255, 255, .1);
+}
+
+.admin-manager-content {
+  min-height: 220px;
+  overflow: auto;
+  padding: 22px 24px 26px;
+}
+
+.admin-manager-content.is-loading-content {
+  opacity: .55;
+  pointer-events: none;
+}
+
+.admin-manager-loading,
+.admin-manager-empty {
+  padding: 36px 14px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.admin-manager-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.admin-manager-search {
+  position: relative;
+  width: min(420px, 100%);
+}
+
+.admin-manager-search .ic {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+}
+
+.admin-manager-search input {
+  padding-left: 40px;
+  min-height: 42px;
+  background: rgba(3, 14, 25, .72);
+}
+
+.admin-manager-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgba(112, 171, 220, .16);
+  border-radius: 14px;
+}
+
+.admin-manager-table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-manager-table th {
+  padding: 12px 15px;
+  color: #91abc4;
+  background: rgba(4, 16, 28, .62);
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.admin-manager-table td {
+  padding: 13px 15px;
+  border-top: 1px solid rgba(112, 171, 220, .12);
+  vertical-align: middle;
+  font-size: .88rem;
+}
+
+.admin-manager-table tbody tr:hover {
+  background: rgba(85, 170, 255, .045);
+}
+
+.admin-manager-table td strong,
+.admin-manager-table td small {
+  display: block;
+}
+
+.admin-manager-table td small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: .77rem;
+}
+
+.manager-status {
+  display: inline-flex;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: .73rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.manager-status.is-active {
+  color: #8ed0ff;
+  background: rgba(85, 170, 255, .12);
+}
+
+.manager-status.is-inactive {
+  color: #ff9aa7;
+  background: rgba(255, 84, 104, .1);
+}
+
+.manager-actions {
+  white-space: nowrap;
+}
+
+.manager-actions form {
+  display: inline-flex;
+  margin: 0;
+}
+
+.manager-icon-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-grid;
+  place-items: center;
+  margin-left: 4px;
+  border: 1px solid rgba(112, 171, 220, .18);
+  border-radius: 9px;
+  color: #a9d7ff;
+  background: rgba(85, 170, 255, .07);
+  cursor: pointer;
+}
+
+.manager-icon-btn:hover {
+  background: rgba(85, 170, 255, .16);
+}
+
+.manager-icon-btn.danger {
+  color: #ff8292;
+  background: rgba(255, 84, 104, .06);
+  border-color: rgba(255, 84, 104, .18);
+}
+
+.manager-icon-btn.danger:hover {
+  background: rgba(255, 84, 104, .15);
+}
+
+.admin-manager-footnote {
+  margin: 10px 2px 0;
+  color: var(--muted);
+  font-size: .77rem;
+}
+
+.admin-manager-form {
+  width: min(680px, 100%);
+  margin: 0 auto;
+}
+
+.admin-manager-form .form-actions {
+  justify-content: flex-start;
+}
+
+.admin-manager-form .form-card {
+  max-width: none;
+}
+
+body.manager-open {
+  overflow: hidden;
+}
+
+
+@media (max-width: 640px) {
+  .admin-manager-overlay {
+    padding: 0;
+    align-items: end;
+  }
+
+  .admin-manager-dialog {
+    width: 100%;
+    max-height: 94vh;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .admin-manager-header {
+    padding: 16px 18px;
+  }
+
+  .admin-manager-content {
+    padding: 16px 14px 22px;
+  }
+
+  .admin-manager-toolbar {
+    align-items: stretch;
+  }
+
+  .admin-manager-search {
+    width: 100%;
+  }
+
+  .admin-manager-toolbar > .btn {
+    width: 100%;
+  }
+}
+
+.toasts {
+  z-index: 240;
 }
