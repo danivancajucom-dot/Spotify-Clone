@@ -8,6 +8,13 @@ let wired = false;
 let shuffleEnabled = false;
 let repeatMode = 0; // 0 = off, 1 = repeat queue, 2 = repeat current track
 
+function randomNextIndex(length, current) {
+  if (length <= 1) return current;
+  const choices = Array.from({ length }, (_, index) => index)
+    .filter((index) => index !== current);
+  return choices[Math.floor(Math.random() * choices.length)];
+}
+
 const trackFromButton = (button) => ({
   src: button.dataset.src || "",
   title: button.dataset.title || "Unknown track",
@@ -364,6 +371,13 @@ export function initPlayer() {
 
         shuffle?.classList.toggle("active", shuffleEnabled);
         shuffle?.setAttribute("aria-pressed", String(shuffleEnabled));
+        shuffle?.setAttribute(
+          "aria-label",
+          shuffleEnabled ? "Shuffle on" : "Shuffle off"
+        );
+        if (shuffle) {
+          shuffle.title = shuffleEnabled ? "Shuffle on" : "Shuffle off";
+        }
 
         renderQueue();
         return;
@@ -456,15 +470,7 @@ export function initPlayer() {
       if (target.closest("#p-next")) {
         if (queue.length) {
           if (shuffleEnabled && queue.length > 1) {
-            let nextIndex = currentIndex;
-
-            while (nextIndex === currentIndex) {
-              nextIndex = Math.floor(
-                Math.random() * queue.length
-              );
-            }
-
-            playIndex(nextIndex);
+            playIndex(randomNextIndex(queue.length, currentIndex));
           } else if (currentIndex < queue.length - 1) {
             playIndex(currentIndex + 1);
           } else if (repeatMode === 1) {
@@ -550,15 +556,7 @@ export function initPlayer() {
         audio.currentTime = 0;
         playIndex(currentIndex);
       } else if (shuffleEnabled && queue.length > 1) {
-        let nextIndex = currentIndex;
-
-        while (nextIndex === currentIndex) {
-          nextIndex = Math.floor(
-            Math.random() * queue.length
-          );
-        }
-
-        playIndex(nextIndex);
+        playIndex(randomNextIndex(queue.length, currentIndex));
       } else if (currentIndex < queue.length - 1) {
         playIndex(currentIndex + 1);
       } else if (repeatMode === 1 && queue.length) {

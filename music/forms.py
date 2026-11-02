@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 from .models import (
     Album,
@@ -75,6 +76,25 @@ class ArtistForm(forms.ModelForm):
 
 
 class AlbumForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Prevent selecting future release dates.
+        self.fields["release_date"].widget.attrs["max"] = (
+            timezone.localdate().isoformat()
+        )
+
+    def clean_release_date(self):
+        release_date = self.cleaned_data["release_date"]
+
+        if release_date > timezone.localdate():
+            raise ValidationError(
+                "Release date cannot be in the future."
+            )
+
+        return release_date
+
     class Meta:
         model = Album
         fields = [

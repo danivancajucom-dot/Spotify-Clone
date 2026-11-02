@@ -100,9 +100,16 @@
   background: rgba(55, 245, 138, .10);
 }
 
-#p-shuffle.active {
+#p-shuffle.active,
+#p-repeat.active {
   color: var(--green);
   background: rgba(55, 245, 138, .12);
+}
+
+#p-repeat {
+  min-width: 34px;
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 .seek {

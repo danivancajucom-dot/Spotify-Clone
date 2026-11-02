@@ -11,7 +11,9 @@ import { initAuthModal } from "./modules/auth-modal.js";
 import { initLoading } from "./modules/loading.js";
 import { initAdminManager } from "./modules/admin-manager.js";
 
+
 function initPage() {
+
   // Clear stale Turbo snapshots before a form submission.
   document.addEventListener(
     "turbo:submit-start",
@@ -22,6 +24,7 @@ function initPage() {
   );
 
   colourPlaceholders();
+
 
   // Greeting.
   const greeting = $("#greeting");
@@ -39,6 +42,7 @@ function initPage() {
     greeting.textContent =
       `${message}, ${greeting.dataset.name || ""}`;
   }
+
 
   // Topbar shadow on scroll.
   const topbar = $(".topbar");
@@ -60,57 +64,99 @@ function initPage() {
     updateShadow();
   }
 
+
   // Persistent music player.
   initPlayer();
 }
 
+
+/* =========================================
+   DATE PICKERS
+   ========================================= */
+
 function initDatePickers() {
+
   if (typeof window.flatpickr !== "function") return;
 
   document.querySelectorAll(
     'input[type="date"]:not([data-flatpickr-init])'
   ).forEach((input) => {
+
     input.dataset.flatpickrInit = "1";
 
     window.flatpickr(input, {
+
       dateFormat: "Y-m-d",
+
       altInput: true,
       altFormat: "F j, Y",
+
       allowInput: true,
       disableMobile: true,
+
+      // Prevent selecting dates after the allowed maximum.
+      maxDate: input.max || null,
+
       monthSelectorType: "static",
+
     });
+
   });
 }
 
+
+/* =========================================
+   MOBILE NAVIGATION
+   ========================================= */
+
 function initMobileNavigation() {
-  if (document.documentElement.dataset.mobileNavInit === "1") return;
+
+  if (document.documentElement.dataset.mobileNavInit === "1") {
+    return;
+  }
 
   document.documentElement.dataset.mobileNavInit = "1";
 
+
   const close = () => {
+
     document.body.classList.remove("nav-open");
 
     const button = $("#mobile-nav-toggle");
 
     button?.setAttribute("aria-expanded", "false");
-    button?.setAttribute("aria-label", "Open navigation");
+
+    button?.setAttribute(
+      "aria-label",
+      "Open navigation"
+    );
+
   };
 
+
   document.addEventListener("click", (event) => {
+
     const target =
-      event.target instanceof Element ? event.target : null;
+      event.target instanceof Element
+        ? event.target
+        : null;
 
     if (!target) return;
 
+
     if (target.closest("#mobile-nav-toggle")) {
+
       const open = !document.body.classList.contains("nav-open");
 
       document.body.classList.toggle("nav-open", open);
 
       const button = $("#mobile-nav-toggle");
 
-      button?.setAttribute("aria-expanded", String(open));
+      button?.setAttribute(
+        "aria-expanded",
+        String(open)
+      );
+
       button?.setAttribute(
         "aria-label",
         open ? "Close navigation" : "Open navigation"
@@ -119,7 +165,11 @@ function initMobileNavigation() {
       return;
     }
 
-    if (target.closest("#app-sidebar a")) close();
+
+    if (target.closest("#app-sidebar a")) {
+      close();
+    }
+
 
     if (
       document.body.classList.contains("nav-open") &&
@@ -127,14 +177,27 @@ function initMobileNavigation() {
     ) {
       close();
     }
+
   });
+
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") close();
+
+    if (event.key === "Escape") {
+      close();
+    }
+
   });
+
 }
 
+
+/* =========================================
+   INITIALIZATION
+   ========================================= */
+
 // Initialize once on initial page load.
+
 initToasts();
 initDialog();
 initRowMenus();
@@ -148,11 +211,15 @@ initDatePickers();
 
 initPage();
 
+
 // Reinitialize page-dependent features after Turbo navigation.
+
 document.addEventListener("turbo:load", () => {
+
   initToasts();
   initForms();
   initDropzones();
   initDatePickers();
   initPage();
+
 });

@@ -1,6 +1,8 @@
 import { $, $$ } from "./utils.js";
 import { toast } from "./toast.js";
 import { confirmDialog } from "./dialog.js";
+import { initDropzones } from "./dropzone.js";
+
 import {
   showLoading,
   hideLoading,
@@ -24,8 +26,10 @@ function setOpen(open) {
 
   modal.classList.toggle("open", open);
   modal.setAttribute("aria-hidden", String(!open));
+
   document.body.classList.toggle("manager-open", open);
 }
+
 
 async function load(url, options = {}) {
   const panel = content();
@@ -37,26 +41,38 @@ async function load(url, options = {}) {
   try {
     const response = await fetch(url, {
       ...options,
+
       headers: {
         "X-Requested-With": "XMLHttpRequest",
         ...(options.headers || {}),
       },
+
       credentials: "same-origin",
     });
 
     const html = await response.text();
 
     panel.innerHTML = html;
+
     panel.classList.remove("is-loading-content");
 
+    // Reinitialize dynamically loaded file upload fields.
+    // This allows existing images and audio files to show previews.
+    initDropzones();
+
     const title = $("#admin-manager-title");
-    const heading = panel.querySelector("[data-manager-title]");
+
+    const heading = panel.querySelector(
+      "[data-manager-title]"
+    );
 
     if (heading && title) {
       title.textContent = heading.dataset.managerTitle;
     }
 
-    const message = response.headers.get("X-Toast-Message");
+    const message = response.headers.get(
+      "X-Toast-Message"
+    );
 
     if (message) {
       toast(message, "success");
@@ -103,6 +119,7 @@ async function load(url, options = {}) {
   }
 }
 
+
 export function initAdminManager() {
   if (initialized) return;
 
@@ -116,7 +133,9 @@ export function initAdminManager() {
 
     if (!target) return;
 
-    const openButton = target.closest("[data-admin-manager]");
+    const openButton = target.closest(
+      "[data-admin-manager]"
+    );
 
     if (openButton) {
       event.preventDefault();
@@ -132,7 +151,9 @@ export function initAdminManager() {
       return;
     }
 
-    const urlButton = target.closest("[data-admin-url]");
+    const urlButton = target.closest(
+      "[data-admin-url]"
+    );
 
     if (urlButton) {
       event.preventDefault();
@@ -150,11 +171,14 @@ export function initAdminManager() {
     }
   });
 
+
   document.addEventListener("submit", async (event) => {
     const form = event.target;
 
     if (!(form instanceof HTMLFormElement)) return;
 
+
+    // Search management records.
     if (form.matches("[data-admin-search]")) {
       event.preventDefault();
 
@@ -171,6 +195,8 @@ export function initAdminManager() {
       return;
     }
 
+
+    // Save or update management records.
     if (form.matches("[data-admin-form]")) {
       event.preventDefault();
 
@@ -197,6 +223,8 @@ export function initAdminManager() {
       return;
     }
 
+
+    // Delete management records.
     if (form.matches("[data-admin-delete]")) {
       event.preventDefault();
 
@@ -205,10 +233,12 @@ export function initAdminManager() {
 
       const confirmed = await confirmDialog({
         title: "Delete record?",
+
         text: (
           `Are you sure you want to delete ${name}? `
           + "This action cannot be undone."
         ),
+
         ok: "Delete",
         danger: true,
         icon: "trash",
@@ -233,6 +263,7 @@ export function initAdminManager() {
       hideLoading();
     }
   });
+
 
   document.addEventListener("keydown", (event) => {
     if (
