@@ -1,3 +1,4 @@
+
 {% extends "layouts/app.html" %}
 
 {% block title %}{{ title }}{% endblock %}
@@ -25,6 +26,7 @@
     method="post"
     enctype="multipart/form-data"
     class="form-card reveal"
+    novalidate
     {% if title|slice:":4" == "Edit" %}
       data-confirm="Save changes?"
       data-confirm-text="This will update the saved details."
@@ -52,4 +54,4 @@
   </form>
 </div>
 
-{% endblock %}s
+{% endblock %}
