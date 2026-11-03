@@ -127,9 +127,6 @@ SAMPLE_TILES = [
 
 
 def home(request):
-    if request.user.is_authenticated:
-        return redirect("dashboard")
-
     albums = Album.objects.select_related("artist").order_by(
         "-cover",
         "-release_date",
